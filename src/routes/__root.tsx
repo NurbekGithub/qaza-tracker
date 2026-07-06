@@ -1,15 +1,15 @@
-import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { Outlet, createRootRoute } from "@tanstack/react-router";
 
-import '../styles.css'
+import "../styles.css";
 
 export const Route = createRootRoute({
   component: RootComponent,
-})
+});
 
 function RootComponent() {
   return (
     <>
       <Outlet />
     </>
-  )
+  );
 }
