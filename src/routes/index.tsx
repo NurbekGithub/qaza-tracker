@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "#/compone
 import { Check, Clock, Minus, Plus } from "lucide-react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { usePostHog } from "@posthog/react";
 
 export const Route = createFileRoute("/")({ component: Home });
 
@@ -18,6 +19,7 @@ function todayKey() {
 }
 
 function Home() {
+  const posthog = usePostHog();
   const [counts, setCounts] = useState<Record<Prayer, number>>(() =>
     PRAYERS.reduce((acc, p) => ({ ...acc, [p]: DEFAULT_COUNT }), {} as Record<Prayer, number>),
   );
@@ -33,12 +35,21 @@ function Home() {
   }
 
   function increase(p: Prayer) {
+    const newCount = counts[p] + 1;
+    posthog.capture("prayer_count_increased", { prayer: p, new_count: newCount });
     setCounts((c) => ({ ...c, [p]: c[p] + 1 }));
   }
 
   function decrease(p: Prayer) {
+    const newCount = Math.max(0, counts[p] - 1);
+    posthog.capture("prayer_count_decreased", { prayer: p, new_count: newCount });
     setCounts((c) => ({ ...c, [p]: Math.max(0, c[p] - 1) }));
     setDoneDates((d) => ({ ...d, [p]: today }));
+  }
+
+  function openDialog(p: Prayer) {
+    setSelected(p);
+    posthog.capture("prayer_dialog_opened", { prayer: p });
   }
 
   return (
@@ -55,7 +66,7 @@ function Home() {
               key={p}
               variant="outline"
               className="h-auto w-full justify-between p-4 text-left"
-              onClick={() => setSelected(p)}
+              onClick={() => openDialog(p)}
             >
               <div className="flex flex-col items-start gap-0.5">
                 <div className="text-base font-medium capitalize">{p}</div>

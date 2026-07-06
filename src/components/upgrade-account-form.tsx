@@ -3,6 +3,7 @@ import { useState } from "react";
 import { db } from "#/lib/db";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
+import { usePostHog } from "@posthog/react";
 
 type UpgradeAccountFormProps = {
   onSuccess: () => void;
@@ -13,6 +14,7 @@ function UpgradeAccountForm({ onSuccess }: UpgradeAccountFormProps) {
   const [code, setCode] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const posthog = usePostHog();
 
   if (!sentEmail) {
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -25,8 +27,10 @@ function UpgradeAccountForm({ onSuccess }: UpgradeAccountFormProps) {
       try {
         await db.auth.sendMagicCode({ email });
         setSentEmail(email);
+        posthog.capture("magic_code_requested");
       } catch (err) {
         setError(extractError(err));
+        posthog.captureException(err);
       } finally {
         setSubmitting(false);
       }
@@ -53,10 +57,13 @@ function UpgradeAccountForm({ onSuccess }: UpgradeAccountFormProps) {
     setSubmitting(true);
     try {
       await db.auth.signInWithMagicCode({ email: sentEmail, code });
+      posthog.capture("account_linked");
+      posthog.identify(sentEmail);
       onSuccess();
     } catch (err) {
       setError(extractError(err));
       setCode("");
+      posthog.captureException(err);
     } finally {
       setSubmitting(false);
     }
