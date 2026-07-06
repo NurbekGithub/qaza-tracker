@@ -1,3 +1,4 @@
+import { AccountButton } from "#/components/account-button";
 import { Button } from "#/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "#/components/ui/dialog";
 import { Check, Clock, Minus, Plus } from "lucide-react";
@@ -42,7 +43,10 @@ function Home() {
 
   return (
     <main className="mx-auto min-h-svh max-w-2xl p-4">
-      <h1 className="mb-4 font-heading text-2xl font-medium">Qaza tracker</h1>
+      <div className="mb-4 flex items-center justify-between">
+        <h1 className="font-heading text-2xl font-medium">Qaza tracker</h1>
+        <AccountButton />
+      </div>
       <div className="flex flex-col gap-3">
         {PRAYERS.map((p) => {
           const done = isDoneToday(p);
