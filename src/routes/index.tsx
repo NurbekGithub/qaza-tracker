@@ -7,8 +7,8 @@ import { db, transact } from "#/lib/db";
 import { formatDate } from "#/lib/date-utils";
 import { PRAYERS, type PrayerName, getPrayer } from "#/lib/prayers";
 import { Layout } from "#/components/layout";
-import { PrayerButton } from "#/components/prayer-button";
 import { PrayerDialog } from "#/components/prayer-dialog";
+import { HomeTabs } from "#/components/home-tabs";
 
 export const Route = createFileRoute("/")({ component: Home });
 
@@ -17,6 +17,7 @@ function Home() {
   const posthog = usePostHog();
   const { isLoading, data } = db.useQuery({
     prayers: { $: { where: { ownerId: user.id } } },
+    prayerEvents: { $: { where: { ownerId: user.id } } },
   });
   const [selected, setSelected] = useState<PrayerName | null>(null);
 
@@ -84,6 +85,10 @@ function Home() {
   }
 
   const hasNoRows = !isLoading && (data?.prayers ?? []).length === 0;
+  const prayerRows = PRAYERS.map(
+    (p) => prayerInfo(p) as { name: PrayerName; count: number; isDoneToday: boolean },
+  );
+  const events = data?.prayerEvents ?? [];
 
   return (
     <Layout title="Qaza tracker" showSettings>
@@ -95,24 +100,12 @@ function Home() {
         </p>
       )}
 
-      <div className="flex flex-col gap-3">
-        {PRAYERS.map((p) => {
-          if (isLoading) {
-            return <div key={p} className="h-10 w-full rounded-md bg-muted"></div>;
-          }
-
-          const { isDoneToday, count } = prayerInfo(p);
-          return (
-            <PrayerButton
-              key={p}
-              prayer={p}
-              count={count}
-              isDoneToday={isDoneToday}
-              onClick={openDialog}
-            />
-          );
-        })}
-      </div>
+      <HomeTabs
+        isLoading={isLoading}
+        prayers={prayerRows}
+        events={events}
+        onPrayerClick={openDialog}
+      />
 
       <PrayerDialog
         prayer={selected}
