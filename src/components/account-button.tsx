@@ -5,7 +5,7 @@ import { Button } from "#/components/ui/button";
 import { UpgradeAccountDialog } from "#/components/upgrade-account-dialog";
 import { usePostHog } from "@posthog/react";
 
-function AccountButton() {
+export function AccountButton() {
   const [open, setOpen] = useState(false);
   const user = db.useUser();
   const posthog = usePostHog();
@@ -39,5 +39,3 @@ function AccountButton() {
     </div>
   );
 }
-
-export { AccountButton };

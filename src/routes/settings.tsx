@@ -1,7 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
 
-import { buttonVariants } from "#/components/ui/button";
+import { Layout } from "#/components/layout";
 import { AccountButton } from "#/components/account-button";
 import { PrayerCountsForm } from "#/components/prayer-counts-form";
 
@@ -9,15 +8,7 @@ export const Route = createFileRoute("/settings")({ component: Settings });
 
 function Settings() {
   return (
-    <main className="mx-auto min-h-svh max-w-2xl p-4">
-      <div className="mb-6 flex items-center gap-2">
-        <Link to="/" className={buttonVariants({ variant: "ghost", size: "icon-sm" })}>
-          <ArrowLeft className="size-5" />
-          <span className="sr-only">Back</span>
-        </Link>
-        <h1 className="font-heading text-2xl font-medium">Settings</h1>
-      </div>
-
+    <Layout title="Settings" showBack backTo="/">
       <section className="mb-8">
         <h2 className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">
           Account
@@ -31,6 +22,6 @@ function Settings() {
         </h2>
         <PrayerCountsForm />
       </section>
-    </main>
+    </Layout>
   );
 }

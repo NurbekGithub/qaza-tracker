@@ -6,7 +6,7 @@ type UpgradeAccountDialogProps = {
   onOpenChange: (open: boolean) => void;
 };
 
-function UpgradeAccountDialog({ open, onOpenChange }: UpgradeAccountDialogProps) {
+export function UpgradeAccountDialog({ open, onOpenChange }: UpgradeAccountDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton>
@@ -21,5 +21,3 @@ function UpgradeAccountDialog({ open, onOpenChange }: UpgradeAccountDialogProps)
     </Dialog>
   );
 }
-
-export { UpgradeAccountDialog };

@@ -61,3 +61,20 @@ copying markup.
 - One component per file, file name matches the component name (PascalCase).
 - Hooks in their own file, prefixed with `use`.
 - Keep files small and focused — if a file does two things, it's two files.
+
+## Export style
+
+Declare exports inline at the definition, never with a trailing `export { ... }`
+block. Prefer `export function`/`export const` at the point of declaration:
+
+```ts
+// ✅ inline export at declaration
+export function PrayerButton({ prayer }: PrayerButtonProps) { ... }
+export const buttonVariants = cva(...)
+
+// ❌ trailing export block
+function PrayerButton({ prayer }: PrayerButtonProps) { ... }
+export { PrayerButton };
+```
+
+Internal helpers that aren't part of the module's public API stay non-exported.

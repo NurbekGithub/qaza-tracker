@@ -1,4 +1,5 @@
 import { Check, Clock } from "lucide-react";
+import NumberFlow from "@number-flow/react";
 
 import { type PrayerName } from "#/lib/prayers";
 import { Button } from "#/components/ui/button";
@@ -24,7 +25,9 @@ export function PrayerButton({ prayer, count, isDoneToday, onClick }: PrayerButt
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <div className="text-3xl font-semibold tabular-nums">{count}</div>
+        <div className="text-3xl font-semibold tabular-nums">
+          <NumberFlow value={count} />
+        </div>
         {isDoneToday ? (
           <Check className="size-5 text-green-600" />
         ) : (

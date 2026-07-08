@@ -1,0 +1,50 @@
+import { Link, useRouter } from "@tanstack/react-router";
+import { ArrowLeft, Settings } from "lucide-react";
+
+import { buttonVariants } from "#/components/ui/button";
+
+type LayoutHeaderProps = {
+  title: string;
+  showBack?: boolean;
+  showSettings?: boolean;
+  backTo?: string;
+};
+
+export function LayoutHeader({ title, showBack, showSettings, backTo }: LayoutHeaderProps) {
+  const router = useRouter();
+
+  return (
+    <header className="bg-primary text-primary-foreground">
+      <div className="mx-auto flex h-14 max-w-2xl items-center gap-2 px-4">
+        {showBack &&
+          (backTo ? (
+            <Link to={backTo} className={buttonVariants({ variant: "ghost", size: "icon-sm" })}>
+              <ArrowLeft className="size-5" />
+              <span className="sr-only">Back</span>
+            </Link>
+          ) : (
+            <button
+              type="button"
+              aria-label="Back"
+              onClick={() => router.history.back()}
+              className={buttonVariants({ variant: "ghost", size: "icon-sm" })}
+            >
+              <ArrowLeft className="size-5" />
+            </button>
+          ))}
+
+        <h1 className="font-heading text-lg font-medium">{title}</h1>
+
+        {showSettings && (
+          <Link
+            to="/settings"
+            className={buttonVariants({ variant: "ghost", size: "icon-sm", className: "ml-auto" })}
+          >
+            <Settings className="size-5" />
+            <span className="sr-only">Settings</span>
+          </Link>
+        )}
+      </div>
+    </header>
+  );
+}

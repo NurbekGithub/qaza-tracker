@@ -1,13 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { usePostHog } from "@posthog/react";
 import { id } from "@instantdb/react";
-import { Settings } from "lucide-react";
 import { useState } from "react";
 
 import { db, transact } from "#/lib/db";
 import { formatDate } from "#/lib/date-utils";
 import { PRAYERS, type PrayerName, getPrayer } from "#/lib/prayers";
-import { buttonVariants } from "#/components/ui/button";
+import { Layout } from "#/components/layout";
 import { PrayerButton } from "#/components/prayer-button";
 import { PrayerDialog } from "#/components/prayer-dialog";
 
@@ -22,6 +21,8 @@ function Home() {
   const [selected, setSelected] = useState<PrayerName | null>(null);
 
   const today = formatDate();
+
+  console.log(data?.prayers);
 
   function prayerInfo(p: PrayerName) {
     const prayer = getPrayer(data?.prayers, p);
@@ -87,15 +88,7 @@ function Home() {
   const hasNoRows = !isLoading && (data?.prayers ?? []).length === 0;
 
   return (
-    <main className="mx-auto min-h-svh max-w-2xl p-4">
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="font-heading text-2xl font-medium">Qaza tracker</h1>
-        <Link to="/settings" className={buttonVariants({ variant: "ghost", size: "icon-sm" })}>
-          <Settings className="size-5" />
-          <span className="sr-only">Settings</span>
-        </Link>
-      </div>
-
+    <Layout title="Qaza tracker" showSettings>
       {hasNoRows && (
         <p className="mb-3 text-sm text-muted-foreground">
           <Link to="/settings" className="underline underline-offset-4 hover:text-foreground">
@@ -127,6 +120,6 @@ function Home() {
         onIncrease={increase}
         onDecrease={decrease}
       />
-    </main>
+    </Layout>
   );
 }
