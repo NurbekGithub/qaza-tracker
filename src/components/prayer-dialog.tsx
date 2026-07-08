@@ -3,6 +3,7 @@ import { Minus, Plus } from "lucide-react";
 import { type PrayerName } from "#/lib/prayers";
 import { Button } from "#/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "#/components/ui/dialog";
+import NumberFlow from "@number-flow/react";
 
 type PrayerDialogProps = {
   prayer: PrayerName | null;
@@ -29,7 +30,9 @@ export function PrayerDialog({
       >
         <div className="p-6 pb-4">
           <DialogTitle className="capitalize">{prayer ?? ""}</DialogTitle>
-          <div className="mt-2 text-5xl font-semibold tabular-nums">{count}</div>
+          <div className="mt-2 text-5xl font-semibold tabular-nums">
+            <NumberFlow value={count} />
+          </div>
         </div>
         <div className="grid grid-cols-2 gap-px overflow-hidden border-t bg-border">
           <Button

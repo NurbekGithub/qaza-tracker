@@ -99,6 +99,10 @@ function Home() {
 
       <div className="flex flex-col gap-3">
         {PRAYERS.map((p) => {
+          if (isLoading) {
+            return <div key={p} className="h-10 w-full rounded-md bg-muted"></div>;
+          }
+
           const { isDoneToday, count } = prayerInfo(p);
           return (
             <PrayerButton
