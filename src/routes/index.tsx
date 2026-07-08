@@ -22,8 +22,6 @@ function Home() {
 
   const today = formatDate();
 
-  console.log(data?.prayers);
-
   function prayerInfo(p: PrayerName) {
     const prayer = getPrayer(data?.prayers, p);
     return {

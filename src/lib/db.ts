@@ -8,7 +8,7 @@ if (!appId) {
   throw new Error("VITE_INSTANT_APP_ID is not set");
 }
 
-export const db = init({ appId, schema });
+export const db = init({ appId, schema, devtool: false });
 
 export function transact(...args: Parameters<typeof db.transact>) {
   db.transact(...args).catch((error) => {
