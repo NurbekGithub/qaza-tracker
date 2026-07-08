@@ -10,20 +10,9 @@ function AccountButton() {
   const user = db.useUser();
   const posthog = usePostHog();
 
-  if (user.isGuest) {
-    function handleSaveData() {
-      posthog.capture("account_link_started");
-      setOpen(true);
-    }
-
-    return (
-      <>
-        <Button variant="outline" size="sm" onClick={handleSaveData}>
-          Save data
-        </Button>
-        <UpgradeAccountDialog open={open} onOpenChange={setOpen} />
-      </>
-    );
+  function handleLinkAccount() {
+    posthog.capture("account_link_started");
+    setOpen(true);
   }
 
   function handleSignOut() {
@@ -33,9 +22,21 @@ function AccountButton() {
   }
 
   return (
-    <Button variant="outline" size="sm" onClick={handleSignOut}>
-      Sign out
-    </Button>
+    <div className="flex items-center justify-between gap-3">
+      <span className="text-sm text-muted-foreground">{user.isGuest ? "Guest" : user.email}</span>
+      {user.isGuest ? (
+        <>
+          <Button variant="outline" size="sm" onClick={handleLinkAccount}>
+            Link account
+          </Button>
+          <UpgradeAccountDialog open={open} onOpenChange={setOpen} />
+        </>
+      ) : (
+        <Button variant="outline" size="sm" onClick={handleSignOut}>
+          Sign out
+        </Button>
+      )}
+    </div>
   );
 }
 

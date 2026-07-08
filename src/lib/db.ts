@@ -9,3 +9,9 @@ if (!appId) {
 }
 
 export const db = init({ appId, schema });
+
+export function transact(...args: Parameters<typeof db.transact>) {
+  db.transact(...args).catch((error) => {
+    console.error("[db.transact] failed", error);
+  });
+}
