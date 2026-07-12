@@ -15,7 +15,8 @@
     "fmt:check": "oxfmt --check",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "i18n": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide --emit-ts-declarations"
   },
   "dependencies": {
     "@base-ui/react": "1.6.0",
