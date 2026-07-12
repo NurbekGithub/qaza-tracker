@@ -2,14 +2,12 @@ import { useState } from "react";
 
 import { Button } from "#/components/ui/button";
 import { InstallDialog } from "#/components/install-dialog";
-import { isIos, isStandalone, useBeforeInstallPrompt } from "#/lib/pwa";
+import { isIos, useBeforeInstallPrompt } from "#/lib/pwa";
 import { m } from "#/paraglide/messages";
 
 export function InstallButton() {
   const deferredPrompt = useBeforeInstallPrompt();
   const [dialogOpen, setDialogOpen] = useState(false);
-
-  if (isStandalone()) return null;
 
   const hasNativePrompt = !isIos() && deferredPrompt !== null;
 

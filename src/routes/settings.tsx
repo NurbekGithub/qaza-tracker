@@ -6,6 +6,7 @@ import { PrayerCountsForm } from "#/components/prayer-counts-form";
 import { LanguageSwitcher } from "#/components/language-switcher";
 import { InstallButton } from "#/components/install-button";
 import { m } from "#/paraglide/messages";
+import { isStandalone } from "#/lib/pwa";
 
 export const Route = createFileRoute("/settings")({ component: Settings });
 
@@ -33,12 +34,14 @@ function Settings() {
         <PrayerCountsForm />
       </section>
 
-      <section>
-        <h2 className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-          {m["install.settings_label"]()}
-        </h2>
-        <InstallButton />
-      </section>
+      {!isStandalone() && (
+        <section>
+          <h2 className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+            {m["install.settings_label"]()}
+          </h2>
+          <InstallButton />
+        </section>
+      )}
     </Layout>
   );
 }
