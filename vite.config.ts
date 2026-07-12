@@ -19,41 +19,17 @@ const config = defineConfig(({ mode }) => {
       viteReact(),
       VitePWA({
         registerType: "prompt",
-        includeAssets: ["favicon.ico", "robots.txt", "logo192.png", "logo512.png"],
-        manifest: {
-          short_name: "Qaza Tracker",
-          name: "Qaza Tracker",
-          description: "Track your qaza prayers for Muslims.",
-          icons: [
-            {
-              src: "favicon.ico",
-              sizes: "64x64 32x32 24x24 16x16",
-              type: "image/x-icon",
-            },
-            {
-              src: "logo192.png",
-              type: "image/png",
-              sizes: "192x192",
-            },
-            {
-              src: "logo512.png",
-              type: "image/png",
-              sizes: "512x512",
-            },
-            {
-              src: "logo512.png",
-              type: "image/png",
-              sizes: "512x512",
-              purpose: "maskable",
-            },
-          ],
-          start_url: ".",
-          scope: ".",
-          display: "standalone",
-          orientation: "portrait",
-          theme_color: "#000000",
-          background_color: "#ffffff",
-        },
+        includeAssets: [
+          "favicon.ico",
+          "robots.txt",
+          "apple-touch-icon.png",
+          "favicon-16x16.png",
+          "favicon-32x32.png",
+          "android-chrome-192x192.png",
+          "android-chrome-512x512.png",
+          "site.webmanifest",
+        ],
+        manifest: false,
         workbox: {
           globPatterns: ["**/*.{js,css,html,svg,png,ico,woff,woff2}"],
           navigateFallback: "index.html",
