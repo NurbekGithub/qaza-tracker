@@ -13,16 +13,16 @@ function Settings() {
     <Layout title={m["nav.settings"]()} showBack backTo="/">
       <section className="mb-8">
         <h2 className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-          {m["settings.account"]()}
+          {m["settings.language"]()}
         </h2>
-        <AccountButton />
+        <LanguageSwitcher />
       </section>
 
       <section className="mb-8">
         <h2 className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-          {m["settings.language"]()}
+          {m["settings.account"]()}
         </h2>
-        <LanguageSwitcher />
+        <AccountButton />
       </section>
 
       <section>
