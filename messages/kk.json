@@ -56,6 +56,15 @@
   "reload.reload": "Қайта жүктеу",
   "reload.close": "Жабу",
 
+  "install.ios_title": "Qaza Tracker-ді орнатыңыз",
+  "install.ios_body": "Жылдам қол жеткізу және офлайн қолдану үшін осы қолданбаны Басты экранға қосыңыз.",
+  "install.ios_step_share": "Share батырмасын басыңыз",
+  "install.ios_step_add": "«Add to Home Screen»-ді таңдаңыз",
+  "install.ios_dismiss": "Қазір жоқ",
+  "install.settings_label": "Қолданбаны орнату",
+  "install.settings_hint": "Жылдам қол жеткізу және офлайн қолдану үшін Басты экранға қосыңыз.",
+  "install.button": "Орнату",
+
   "language.en": "English",
   "language.kk": "Қазақша"
 }

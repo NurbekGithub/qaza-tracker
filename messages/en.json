@@ -56,6 +56,15 @@
   "reload.reload": "Reload",
   "reload.close": "Close",
 
+  "install.ios_title": "Install Qaza Tracker",
+  "install.ios_body": "Add this app to your Home Screen for quick access and offline use.",
+  "install.ios_step_share": "Tap the Share button",
+  "install.ios_step_add": "Choose “Add to Home Screen”",
+  "install.ios_dismiss": "Not now",
+  "install.settings_label": "Install app",
+  "install.settings_hint": "Add to your Home Screen for quick access and offline use.",
+  "install.button": "Install",
+
   "language.en": "English",
   "language.kk": "Қазақша"
 }

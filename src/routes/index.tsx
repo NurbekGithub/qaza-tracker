@@ -92,7 +92,7 @@ function Home() {
   const events = data?.prayerEvents ?? [];
 
   return (
-    <Layout title={m["app.title"]()} showSettings>
+    <Layout title="Qaza tracker" showSettings>
       {hasNoRows && (
         <p className="mb-3 text-sm text-muted-foreground">
           <Link to="/settings" className="underline underline-offset-4 hover:text-foreground">

@@ -2,6 +2,7 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
+import { IosInstallBanner } from "#/components/ios-install-banner";
 import { ReloadPrompt } from "#/components/reload-prompt";
 import { getLocale } from "#/paraglide/runtime";
 
@@ -27,6 +28,7 @@ if (!rootElement.innerHTML) {
     <>
       <RouterProvider router={router} />
       <ReloadPrompt />
+      <IosInstallBanner />
     </>,
   );
 }
