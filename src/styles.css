@@ -168,6 +168,19 @@ body {
   --shadow-2xl: 0px 2px 3px 0px hsl(0 0% 5% / 0.45);
 }
 
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+@utility pb-safe-md {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+@utility pb-safe-lg {
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

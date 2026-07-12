@@ -15,7 +15,7 @@ export function LayoutHeader({ title, showBack, showSettings, backTo }: LayoutHe
   const router = useRouter();
 
   return (
-    <header className="bg-primary text-primary-foreground">
+    <header className="bg-primary pt-safe text-primary-foreground">
       <div className="mx-auto flex h-14 max-w-2xl items-center gap-2 px-4">
         {showBack &&
           (backTo ? (

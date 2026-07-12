@@ -24,7 +24,7 @@ export function IosInstallBanner() {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center p-4 pb-6">
+    <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center p-4 pb-safe-lg">
       <div className="bg-card text-card-foreground relative w-full max-w-sm rounded-2xl border p-4 shadow-lg">
         <button
           type="button"

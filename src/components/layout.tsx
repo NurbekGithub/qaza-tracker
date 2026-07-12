@@ -14,7 +14,7 @@ export function Layout({ title, showBack, showSettings, backTo, children }: Layo
   return (
     <div className="min-h-svh">
       <LayoutHeader title={title} showBack={showBack} showSettings={showSettings} backTo={backTo} />
-      <main className="mx-auto max-w-2xl p-4">{children}</main>
+      <main className="mx-auto max-w-2xl p-4 pb-safe-md">{children}</main>
     </div>
   );
 }

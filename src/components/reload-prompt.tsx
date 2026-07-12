@@ -22,7 +22,7 @@ export function ReloadPrompt() {
   if (!offlineReady && !needRefresh) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center p-4">
+    <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center p-4 pb-safe-md">
       <div className="bg-card text-card-foreground flex w-full max-w-sm items-center justify-between gap-3 rounded-lg border p-3 shadow-lg">
         <p className="text-sm">
           {offlineReady ? m["reload.offline_ready"]() : m["reload.new_content"]()}
