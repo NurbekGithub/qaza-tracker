@@ -27,7 +27,7 @@ function Home() {
   function prayerInfo(p: PrayerName) {
     const prayer = getPrayer(data?.prayers, p);
     return {
-      name: prayer?.name,
+      name: p,
       count: prayer?.count ?? 0,
       isDoneToday: prayer?.doneDate === today,
     };
