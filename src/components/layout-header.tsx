@@ -2,16 +2,24 @@ import { Link, useRouter } from "@tanstack/react-router";
 import { ArrowLeft, Settings } from "lucide-react";
 
 import { buttonVariants } from "#/components/ui/button";
+import { LanguageMenuButton } from "#/components/language-menu-button";
 import { m } from "#/paraglide/messages";
 
 type LayoutHeaderProps = {
   title: string;
   showBack?: boolean;
   showSettings?: boolean;
+  showLanguage?: boolean;
   backTo?: string;
 };
 
-export function LayoutHeader({ title, showBack, showSettings, backTo }: LayoutHeaderProps) {
+export function LayoutHeader({
+  title,
+  showBack,
+  showSettings,
+  showLanguage,
+  backTo,
+}: LayoutHeaderProps) {
   const router = useRouter();
 
   return (
@@ -36,6 +44,7 @@ export function LayoutHeader({ title, showBack, showSettings, backTo }: LayoutHe
 
         <h1 className="font-heading text-lg font-medium">{title}</h1>
 
+        {showLanguage && <LanguageMenuButton />}
         {showSettings && (
           <Link
             to="/settings"
