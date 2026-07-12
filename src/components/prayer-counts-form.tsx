@@ -5,7 +5,8 @@ import { usePostHog } from "@posthog/react";
 import { db, transact } from "#/lib/db";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
-import { getPrayer, PRAYERS, type PrayerName } from "#/lib/prayers";
+import { getPrayer, PRAYERS, prayerName, type PrayerName } from "#/lib/prayers";
+import { m } from "#/paraglide/messages";
 
 export function PrayerCountsForm() {
   const user = db.useUser();
@@ -35,7 +36,7 @@ export function PrayerCountsForm() {
   }, [data]);
 
   if (isLoading) {
-    return <div className="text-sm text-muted-foreground">Loading…</div>;
+    return <div className="text-sm text-muted-foreground">{m["state.loading"]()}</div>;
   }
 
   function serverCount(p: PrayerName): number {
@@ -75,8 +76,8 @@ export function PrayerCountsForm() {
     <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
       {PRAYERS.map((p) => (
         <div key={p} className="flex items-center justify-between gap-3">
-          <label htmlFor={`prayer-${p}`} className="text-base font-medium capitalize">
-            {p}
+          <label htmlFor={`prayer-${p}`} className="text-base font-medium">
+            {prayerName(p)}
           </label>
           <Input
             id={`prayer-${p}`}
@@ -90,7 +91,7 @@ export function PrayerCountsForm() {
         </div>
       ))}
       <Button type="submit" className="mt-2" disabled={!hasChanges}>
-        Save
+        {m["settings.save"]()}
       </Button>
     </form>
   );

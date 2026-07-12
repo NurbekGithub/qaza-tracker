@@ -2,6 +2,7 @@ import { Link, useRouter } from "@tanstack/react-router";
 import { ArrowLeft, Settings } from "lucide-react";
 
 import { buttonVariants } from "#/components/ui/button";
+import { m } from "#/paraglide/messages";
 
 type LayoutHeaderProps = {
   title: string;
@@ -20,12 +21,12 @@ export function LayoutHeader({ title, showBack, showSettings, backTo }: LayoutHe
           (backTo ? (
             <Link to={backTo} className={buttonVariants({ variant: "ghost", size: "icon-sm" })}>
               <ArrowLeft className="size-5" />
-              <span className="sr-only">Back</span>
+              <span className="sr-only">{m["nav.back"]()}</span>
             </Link>
           ) : (
             <button
               type="button"
-              aria-label="Back"
+              aria-label={m["nav.back"]()}
               onClick={() => router.history.back()}
               className={buttonVariants({ variant: "ghost", size: "icon-sm" })}
             >
@@ -41,7 +42,7 @@ export function LayoutHeader({ title, showBack, showSettings, backTo }: LayoutHe
             className={buttonVariants({ variant: "ghost", size: "icon-sm", className: "ml-auto" })}
           >
             <Settings className="size-5" />
-            <span className="sr-only">Settings</span>
+            <span className="sr-only">{m["nav.settings"]()}</span>
           </Link>
         )}
       </div>

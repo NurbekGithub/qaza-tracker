@@ -3,6 +3,9 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
 import { ReloadPrompt } from "#/components/reload-prompt";
+import { getLocale } from "#/paraglide/runtime";
+
+document.documentElement.lang = getLocale();
 
 const router = createRouter({
   routeTree,

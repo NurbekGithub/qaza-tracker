@@ -3,6 +3,7 @@ import { useAsyncFn } from "react-use";
 
 import { db } from "#/lib/db";
 import { extractError } from "#/lib/error-utils";
+import { m } from "#/paraglide/messages";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
 import { usePostHog } from "@posthog/react";
@@ -54,16 +55,19 @@ export function EmailSignInForm({ onSuccess }: EmailSignInFormProps) {
 
     return (
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <p className="text-sm text-muted-foreground">
-          Enter your email and we&apos;ll send a verification code. Your guest data will be linked
-          to this account.
-        </p>
-        <Input name="email" type="email" placeholder="you@example.com" required autoFocus />
+        <p className="text-sm text-muted-foreground">{m["email.intro"]()}</p>
+        <Input
+          name="email"
+          type="email"
+          placeholder={m["email.placeholder"]()}
+          required
+          autoFocus
+        />
         {requestState.error && (
           <p className="text-sm text-red-600">{extractError(requestState.error)}</p>
         )}
         <Button type="submit" disabled={requestState.loading}>
-          {requestState.loading ? "Sending…" : "Send code"}
+          {requestState.loading ? m["email.sending"]() : m["email.send"]()}
         </Button>
       </form>
     );
@@ -76,9 +80,7 @@ export function EmailSignInForm({ onSuccess }: EmailSignInFormProps) {
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleVerify}>
-      <p className="text-sm text-muted-foreground">
-        We sent a code to <strong>{sentEmail}</strong>. Enter it below to link your account.
-      </p>
+      <p className="text-sm text-muted-foreground">{m["email.code_sent"]({ email: sentEmail })}</p>
       <Input
         name="code"
         type="text"
@@ -93,7 +95,7 @@ export function EmailSignInForm({ onSuccess }: EmailSignInFormProps) {
         <p className="text-sm text-red-600">{extractError(verifyState.error)}</p>
       )}
       <Button type="submit" disabled={verifyState.loading}>
-        {verifyState.loading ? "Verifying…" : "Verify code"}
+        {verifyState.loading ? m["email.verifying"]() : m["email.verify"]()}
       </Button>
       <Button
         type="button"
@@ -103,7 +105,7 @@ export function EmailSignInForm({ onSuccess }: EmailSignInFormProps) {
           setCode("");
         }}
       >
-        Use a different email
+        {m["email.use_different"]()}
       </Button>
     </form>
   );

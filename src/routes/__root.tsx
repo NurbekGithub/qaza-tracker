@@ -3,6 +3,7 @@ import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { PostHogProvider } from "@posthog/react";
 
 import { db } from "#/lib/db";
+import { m } from "#/paraglide/messages";
 import "../styles.css";
 
 export const Route = createRootRoute({
@@ -28,7 +29,7 @@ function RootComponent() {
   if (isLoading) {
     return (
       <div className="flex min-h-svh items-center justify-center">
-        <div className="text-sm text-muted-foreground">Loading…</div>
+        <div className="text-sm text-muted-foreground">{m["state.loading"]()}</div>
       </div>
     );
   }
@@ -61,7 +62,7 @@ function GuestSignIn() {
 
   return (
     <div className="flex min-h-svh items-center justify-center">
-      <div className="text-sm text-muted-foreground">Starting…</div>
+      <div className="text-sm text-muted-foreground">{m["state.starting"]()}</div>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "#/components/ui/dialog";
 import { UpgradeAccountForm } from "#/components/upgrade-account-form";
+import { m } from "#/paraglide/messages";
 
 type UpgradeAccountDialogProps = {
   open: boolean;
@@ -10,10 +11,8 @@ export function UpgradeAccountDialog({ open, onOpenChange }: UpgradeAccountDialo
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton>
-        <DialogTitle>Link your account</DialogTitle>
-        <DialogDescription>
-          Save your data so you can access it from other devices.
-        </DialogDescription>
+        <DialogTitle>{m["upgrade.title"]()}</DialogTitle>
+        <DialogDescription>{m["upgrade.description"]()}</DialogDescription>
         <div className="pt-2">
           <UpgradeAccountForm onSuccess={() => onOpenChange(false)} />
         </div>

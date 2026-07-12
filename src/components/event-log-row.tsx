@@ -1,4 +1,4 @@
-import { type PrayerName } from "#/lib/prayers";
+import { type PrayerName, prayerName } from "#/lib/prayers";
 import { formatTime } from "#/lib/date-utils";
 
 import type { InstaQLEntity } from "@instantdb/react";
@@ -10,15 +10,6 @@ type EventLogRowProps = {
   event: PrayerEventEntity;
 };
 
-const DELTA_LABEL: Record<PrayerName, string> = {
-  fajr: "Fajr",
-  zukhr: "Zuhr",
-  asr: "Asr",
-  magrib: "Maghrib",
-  isha: "Isha",
-  wajib: "Wajib",
-};
-
 export function EventLogRow({ event }: EventLogRowProps) {
   const delta = event.delta ?? 0;
   const deltaText = delta > 0 ? `+${delta}` : `${delta}`;
@@ -26,7 +17,7 @@ export function EventLogRow({ event }: EventLogRowProps) {
 
   return (
     <div className="flex items-center justify-between rounded-md bg-card px-3 py-2 text-sm">
-      <span className="font-medium">{DELTA_LABEL[event.prayer as PrayerName] ?? event.prayer}</span>
+      <span className="font-medium">{prayerName(event.prayer as PrayerName)}</span>
       <div className="flex items-center gap-3">
         <span className="tabular-nums font-semibold">{deltaText}</span>
         <span className={`tabular-nums font-semibold ${deltaColor}`}>{delta >= 0 ? "▲" : "▼"}</span>

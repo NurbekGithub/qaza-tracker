@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 
+import { m } from "#/paraglide/messages";
 import { EventLogDay } from "#/components/event-log-day";
 import type { PrayerEventEntity } from "#/components/event-log-row";
 
@@ -9,11 +10,7 @@ type EventLogProps = {
 
 export function EventLog({ events }: EventLogProps) {
   if (events.length === 0) {
-    return (
-      <p className="py-10 text-center text-sm text-muted-foreground">
-        No events yet. Adjust a prayer count to start logging.
-      </p>
-    );
+    return <p className="py-10 text-center text-sm text-muted-foreground">{m["log.empty"]()}</p>;
   }
 
   const sorted = [...events].sort((a, b) => b.at - a.at);

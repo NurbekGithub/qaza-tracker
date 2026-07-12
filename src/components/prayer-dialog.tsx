@@ -1,6 +1,7 @@
 import { Minus, Plus } from "lucide-react";
 
-import { type PrayerName } from "#/lib/prayers";
+import { type PrayerName, prayerName } from "#/lib/prayers";
+import { m } from "#/paraglide/messages";
 import { Button } from "#/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "#/components/ui/dialog";
 import NumberFlow from "@number-flow/react";
@@ -29,7 +30,7 @@ export function PrayerDialog({
         className="top-auto left-0 right-0 bottom-0 max-w-none translate-x-0 translate-y-0 rounded-b-none rounded-t-xl p-0 data-open:animate-in data-open:slide-in-from-bottom data-closed:animate-out data-closed:slide-out-to-bottom sm:top-1/2 sm:left-1/2 sm:right-auto sm:bottom-auto sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl sm:p-6"
       >
         <div className="p-6 pb-4">
-          <DialogTitle className="capitalize">{prayer ?? ""}</DialogTitle>
+          <DialogTitle>{prayer ? prayerName(prayer) : ""}</DialogTitle>
           <div className="mt-2 text-5xl font-semibold tabular-nums">
             <NumberFlow value={count} />
           </div>
@@ -41,7 +42,7 @@ export function PrayerDialog({
             onClick={() => prayer && onIncrease(prayer)}
           >
             <Plus className="size-5" />
-            Increase
+            {m["dialog.increase"]()}
           </Button>
           <Button
             variant="ghost"
@@ -50,7 +51,7 @@ export function PrayerDialog({
             disabled={count <= 0}
           >
             <Minus className="size-5" />
-            Decrease
+            {m["dialog.decrease"]()}
           </Button>
         </div>
       </DialogContent>

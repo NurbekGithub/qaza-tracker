@@ -4,6 +4,7 @@ import { GoogleLogin, GoogleOAuthProvider, type CredentialResponse } from "@reac
 
 import { db } from "#/lib/db";
 import { extractError } from "#/lib/error-utils";
+import { m } from "#/paraglide/messages";
 import { usePostHog } from "@posthog/react";
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_NAME } from "#/constants";
 
@@ -19,7 +20,7 @@ export function GoogleSignInButton({ onSuccess }: GoogleSignInButtonProps) {
   const [state, handleCredential] = useAsyncFn(
     async (credentialResponse: CredentialResponse) => {
       if (!credentialResponse.credential) {
-        throw new Error("Google sign-in failed. Please try again.");
+        throw new Error(m["google.error"]());
       }
       try {
         await db.auth.signInWithIdToken({
@@ -49,7 +50,7 @@ export function GoogleSignInButton({ onSuccess }: GoogleSignInButtonProps) {
           nonce={nonce}
           onSuccess={handleCredential}
           onError={() => {
-            setPopupError("Google sign-in failed. Please try again.");
+            setPopupError(m["google.error"]());
           }}
           text="continue_with"
           shape="rectangular"

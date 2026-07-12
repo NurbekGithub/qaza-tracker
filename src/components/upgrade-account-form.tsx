@@ -1,6 +1,7 @@
 import { GoogleSignInButton } from "#/components/google-sign-in-button";
 import { EmailSignInForm } from "#/components/email-sign-in-form";
 import { GOOGLE_CLIENT_ID } from "#/constants";
+import { m } from "#/paraglide/messages";
 
 type UpgradeAccountFormProps = {
   onSuccess: () => void;
@@ -18,7 +19,7 @@ export function UpgradeAccountForm({ onSuccess }: UpgradeAccountFormProps) {
       <GoogleSignInButton onSuccess={onSuccess} />
       <div className="flex items-center gap-3 py-1">
         <div className="h-px flex-1 bg-border" />
-        <span className="text-xs text-muted-foreground">or continue with email</span>
+        <span className="text-xs text-muted-foreground">{m["upgrade.or_email"]()}</span>
         <div className="h-px flex-1 bg-border" />
       </div>
       {emailForm}

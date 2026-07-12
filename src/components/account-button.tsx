@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { db } from "#/lib/db";
+import { m } from "#/paraglide/messages";
 import { Button } from "#/components/ui/button";
 import { UpgradeAccountDialog } from "#/components/upgrade-account-dialog";
 import { usePostHog } from "@posthog/react";
@@ -23,17 +24,19 @@ export function AccountButton() {
 
   return (
     <div className="flex items-center justify-between gap-3">
-      <span className="text-sm text-muted-foreground">{user.isGuest ? "Guest" : user.email}</span>
+      <span className="text-sm text-muted-foreground">
+        {user.isGuest ? m["account.guest"]() : user.email}
+      </span>
       {user.isGuest ? (
         <>
           <Button variant="outline" size="sm" onClick={handleLinkAccount}>
-            Link account
+            {m["account.link"]()}
           </Button>
           <UpgradeAccountDialog open={open} onOpenChange={setOpen} />
         </>
       ) : (
         <Button variant="outline" size="sm" onClick={handleSignOut}>
-          Sign out
+          {m["account.sign_out"]()}
         </Button>
       )}
     </div>

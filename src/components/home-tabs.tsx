@@ -1,6 +1,7 @@
 import { ClipboardList, ListChecks } from "lucide-react";
 
 import type { PrayerName } from "#/lib/prayers";
+import { m } from "#/paraglide/messages";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "#/components/ui/tabs";
 import { PrayerButton } from "#/components/prayer-button";
 import { EventLog } from "#/components/event-log";
@@ -54,14 +55,14 @@ export function HomeTabs({ isLoading, prayers, events, onPrayerClick }: HomeTabs
             className="gap-2 rounded-lg py-2.5 data-active:bg-white data-active:text-primary data-active:shadow-lg"
           >
             <ListChecks className="size-6" />
-            Counts
+            {m["tab.counts"]()}
           </TabsTrigger>
           <TabsTrigger
             value="log"
             className="gap-2 rounded-lg py-2.5 data-active:bg-white data-active:text-primary data-active:shadow-lg"
           >
             <ClipboardList className="size-6" />
-            Log
+            {m["tab.log"]()}
           </TabsTrigger>
         </TabsList>
       </div>

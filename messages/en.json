@@ -1,0 +1,61 @@
+{
+  "$schema": "https://inlang.com/schema/message-format",
+  "app.title": "qaza tracker",
+  "nav.settings": "Settings",
+  "nav.back": "Back",
+
+  "state.loading": "Loading…",
+  "state.starting": "Starting…",
+
+  "home.set_counts_cta": "Set your qaza counts in Settings →",
+
+  "tab.counts": "Counts",
+  "tab.log": "Log",
+
+  "prayer.name.fajr": "Fajr",
+  "prayer.name.zukhr": "Zuhr",
+  "prayer.name.asr": "Asr",
+  "prayer.name.magrib": "Maghrib",
+  "prayer.name.isha": "Isha",
+  "prayer.name.witr": "Witr",
+
+  "prayer.done_today": "Done today",
+  "prayer.pending": "Pending",
+
+  "dialog.increase": "Increase",
+  "dialog.decrease": "Decrease",
+
+  "settings.account": "Account",
+  "settings.prayer_counts": "Prayer counts",
+  "settings.language": "Language",
+  "settings.save": "Save",
+
+  "account.guest": "Guest",
+  "account.link": "Link account",
+  "account.sign_out": "Sign out",
+
+  "upgrade.title": "Link your account",
+  "upgrade.description": "Save your data so you can access it from other devices.",
+  "upgrade.or_email": "or continue with email",
+
+  "email.intro": "Enter your email and we'll send a verification code. Your guest data will be linked to this account.",
+  "email.placeholder": "you@example.com",
+  "email.send": "Send code",
+  "email.sending": "Sending…",
+  "email.code_sent": "We sent a code to {email}. Enter it below to link your account.",
+  "email.verify": "Verify code",
+  "email.verifying": "Verifying…",
+  "email.use_different": "Use a different email",
+
+  "google.error": "Google sign-in failed. Please try again.",
+
+  "log.empty": "No events yet. Adjust a prayer count to start logging.",
+
+  "reload.offline_ready": "App ready to work offline",
+  "reload.new_content": "New content available, reload to update.",
+  "reload.reload": "Reload",
+  "reload.close": "Close",
+
+  "language.en": "English",
+  "language.kk": "Қазақша"
+}

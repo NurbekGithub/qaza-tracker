@@ -1,0 +1,61 @@
+{
+  "$schema": "https://inlang.com/schema/message-format",
+  "app.title": "Қаза трекері",
+  "nav.settings": "Баптаулар",
+  "nav.back": "Артқа",
+
+  "state.loading": "Жүктелуде…",
+  "state.starting": "Басталуда…",
+
+  "home.set_counts_cta": "Қаза санағыңызды Баптауларда орнатыңыз →",
+
+  "tab.counts": "Санақ",
+  "tab.log": "Журнал",
+
+  "prayer.name.fajr": "Таң",
+  "prayer.name.zukhr": "Бесін",
+  "prayer.name.asr": "Екінті",
+  "prayer.name.magrib": "Ақшам",
+  "prayer.name.isha": "Құптан",
+  "prayer.name.witr": "Үтір",
+
+  "prayer.done_today": "Бүгін орындалды",
+  "prayer.pending": "Күтуде",
+
+  "dialog.increase": "Көбейту",
+  "dialog.decrease": "Азайту",
+
+  "settings.account": "Аккаунт",
+  "settings.prayer_counts": "Намаз санағы",
+  "settings.language": "Тіл",
+  "settings.save": "Сақтау",
+
+  "account.guest": "Қонақ",
+  "account.link": "Аккаунтты байланыстыру",
+  "account.sign_out": "Шығу",
+
+  "upgrade.title": "Аккаунтыңызды байланыстырыңыз",
+  "upgrade.description": "Деректеріңізді сақтаңыз, басқа құрылғылардан кіре аласыз.",
+  "upgrade.or_email": "немесе email арқылы жалғастырыңыз",
+
+  "email.intro": "Email адресіңізді енгізіңіз, біз сізге растау кодын жібереміз. Қонақ деректеріңіз осы аккаунтқа байланады.",
+  "email.placeholder": "you@example.com",
+  "email.send": "Код жіберу",
+  "email.sending": "Жіберілуде…",
+  "email.code_sent": "Біз {email} адресіне код жібердік. Аккаунтыңызды байланыстыру үшін оны төменде енгізіңіз.",
+  "email.verify": "Кодты растау",
+  "email.verifying": "Расталуда…",
+  "email.use_different": "Басқа email қолдану",
+
+  "google.error": "Google арқылы кіру сәтсіз аяқталды. Қайталап көріңіз.",
+
+  "log.empty": "Әлі оқиғалар жоқ. Намаз санағын өзгертіп, журналды жүргізуді бастаңыз.",
+
+  "reload.offline_ready": "Қолданба офлайн жұмыс істеуге дайын",
+  "reload.new_content": "Жаңа мазмұн қолжетімді жаңарту үшін қайта жүктеңіз.",
+  "reload.reload": "Қайта жүктеу",
+  "reload.close": "Жабу",
+
+  "language.en": "English",
+  "language.kk": "Қазақша"
+}

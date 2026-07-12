@@ -6,6 +6,7 @@ import { useState } from "react";
 import { db, transact } from "#/lib/db";
 import { formatDate } from "#/lib/date-utils";
 import { PRAYERS, type PrayerName, getPrayer } from "#/lib/prayers";
+import { m } from "#/paraglide/messages";
 import { Layout } from "#/components/layout";
 import { PrayerDialog } from "#/components/prayer-dialog";
 import { HomeTabs } from "#/components/home-tabs";
@@ -91,11 +92,11 @@ function Home() {
   const events = data?.prayerEvents ?? [];
 
   return (
-    <Layout title="Qaza tracker" showSettings>
+    <Layout title={m["app.title"]()} showSettings>
       {hasNoRows && (
         <p className="mb-3 text-sm text-muted-foreground">
           <Link to="/settings" className="underline underline-offset-4 hover:text-foreground">
-            Set your qaza counts in Settings →
+            {m["home.set_counts_cta"]()}
           </Link>
         </p>
       )}
