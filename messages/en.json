@@ -51,7 +51,6 @@
 
   "log.empty": "No events yet. Adjust a prayer count to start logging.",
 
-  "reload.offline_ready": "App ready to work offline",
   "reload.new_content": "New content available, reload to update.",
   "reload.reload": "Reload",
   "reload.close": "Close",
