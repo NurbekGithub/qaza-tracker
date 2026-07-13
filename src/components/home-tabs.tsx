@@ -48,7 +48,7 @@ export function HomeTabs({ isLoading, prayers, events, onPrayerClick }: HomeTabs
         </TabsContent>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 border-t border-border bg-background h-12">
+      <div className="fixed inset-x-0 bottom-0 border-t border-border bg-background">
         <TabsList className="mx-auto flex h-full! w-full max-w-2xl justify-around gap-2 rounded-none bg-transparent p-1.5 text-lg">
           <TabsTrigger
             value="counts"
