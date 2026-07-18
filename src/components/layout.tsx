@@ -23,7 +23,7 @@ export function Layout({
   children,
 }: LayoutProps) {
   return (
-    <div className="flex h-svh flex-col">
+    <div className="h-app flex flex-col">
       <LayoutHeader
         title={title}
         showBack={showBack}

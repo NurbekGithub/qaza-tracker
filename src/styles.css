@@ -181,6 +181,18 @@ body {
   padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
 }
 
+.h-app {
+  height: 100vh;
+  height: 100svh;
+}
+
+@media (display-mode: standalone) {
+  .h-app {
+    height: 100vh;
+    height: 100lvh;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
