@@ -3,11 +3,19 @@ import { useRegisterSW } from "virtual:pwa-register/react";
 import { m } from "#/paraglide/messages";
 import { Button } from "#/components/ui/button";
 
+const updateCheckIntervalMs = 60 * 60 * 1000; // 1 hour
+
 export function ReloadPrompt() {
   const {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
   } = useRegisterSW({
+    onRegisteredSW(_swUrl, registration) {
+      if (!registration) return;
+      setInterval(() => {
+        if (navigator.onLine) registration.update();
+      }, updateCheckIntervalMs);
+    },
     onRegisterError(error) {
       console.error("SW registration error", error);
     },
