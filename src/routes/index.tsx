@@ -94,7 +94,7 @@ function Home() {
   const events = data?.prayerEvents ?? [];
 
   return (
-    <Tabs defaultValue="counts">
+    <Tabs defaultValue="counts" className="h-full">
       <Layout title="Qaza tracker" showSettings footer={<HomeTabsNav />}>
         {hasNoRows && (
           <p className="mb-3 text-sm text-muted-foreground">

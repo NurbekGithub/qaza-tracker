@@ -28,7 +28,7 @@ function RootComponent() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-svh items-center justify-center">
+      <div className="flex min-h-full items-center justify-center">
         <div className="text-sm text-muted-foreground">{m["state.loading"]()}</div>
       </div>
     );
@@ -36,7 +36,7 @@ function RootComponent() {
 
   if (error) {
     return (
-      <div className="flex min-h-svh items-center justify-center p-4">
+      <div className="flex min-h-full items-center justify-center p-4">
         <div className="text-sm text-red-600">{error.message}</div>
       </div>
     );
@@ -61,7 +61,7 @@ function GuestSignIn() {
   }, []);
 
   return (
-    <div className="flex min-h-svh items-center justify-center">
+    <div className="flex min-h-full items-center justify-center">
       <div className="text-sm text-muted-foreground">{m["state.starting"]()}</div>
     </div>
   );
