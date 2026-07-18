@@ -29,6 +29,11 @@
   "settings.prayer_counts": "Намаз санағы",
   "settings.language": "Тіл",
   "settings.save": "Сақтау",
+  "settings.saved_toast": "Санақ жаңартылды",
+  "settings.theme": "Тема",
+  "theme.light": "Ашық",
+  "theme.dark": "Қараңғы",
+  "theme.system": "Жүйе",
 
   "account.guest": "Қонақ",
   "account.link": "Аккаунтты байланыстыру",

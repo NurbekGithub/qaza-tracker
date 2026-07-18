@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { id } from "@instantdb/react";
 import { usePostHog } from "@posthog/react";
+import { toast } from "sonner";
 
 import { db, transact } from "#/lib/db";
 import { Button } from "#/components/ui/button";
@@ -70,6 +71,7 @@ export function PrayerCountsForm() {
       ];
     });
     transact(txs);
+    toast.success(m["settings.saved_toast"]());
   }
 
   return (
@@ -86,7 +88,7 @@ export function PrayerCountsForm() {
             inputMode="numeric"
             className="w-24 text-right tabular-nums"
             value={values[p]}
-            onChange={(e) => setValues((v) => ({ ...v, [p]: e.target.value }))}
+            onChange={(e) => setValues((v) => ({ ...v, [p]: Number(e.target.value) }))}
           />
         </div>
       ))}

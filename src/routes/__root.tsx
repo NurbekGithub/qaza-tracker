@@ -3,6 +3,8 @@ import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { PostHogProvider } from "@posthog/react";
 
 import { db } from "#/lib/db";
+import { Toaster } from "#/components/ui/sonner";
+import { ThemeProvider } from "#/components/theme-provider";
 import { m } from "#/paraglide/messages";
 import "../styles.css";
 
@@ -18,7 +20,9 @@ export const Route = createRootRoute({
         debug: import.meta.env.DEV,
       }}
     >
-      <RootComponent />
+      <ThemeProvider>
+        <RootComponent />
+      </ThemeProvider>
     </PostHogProvider>
   ),
 });
@@ -49,6 +53,7 @@ function RootComponent() {
   return (
     <>
       <Outlet />
+      <Toaster position="top-center" />
     </>
   );
 }

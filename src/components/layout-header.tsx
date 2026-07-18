@@ -3,6 +3,7 @@ import { ArrowLeft, Settings } from "lucide-react";
 
 import { buttonVariants } from "#/components/ui/button";
 import { LanguageMenuButton } from "#/components/language-menu-button";
+import { ThemeSelect } from "#/components/theme-select";
 import { m } from "#/paraglide/messages";
 
 type LayoutHeaderProps = {
@@ -23,7 +24,7 @@ export function LayoutHeader({
   const router = useRouter();
 
   return (
-    <header className="shrink-0 bg-primary pt-safe text-primary-foreground">
+    <header className="shrink-0 bg-primary pt-safe text-primary-foreground dark:bg-card dark:text-card-foreground">
       <div className="mx-auto flex h-14 max-w-2xl items-center gap-2 px-4">
         {showBack &&
           (backTo ? (
@@ -45,6 +46,7 @@ export function LayoutHeader({
         <h1 className="font-heading text-lg font-medium">{title}</h1>
 
         {showLanguage && <LanguageMenuButton />}
+        {showLanguage && <ThemeSelect />}
         {showSettings && (
           <Link
             to="/settings"

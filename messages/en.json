@@ -29,6 +29,11 @@
   "settings.prayer_counts": "Prayer counts",
   "settings.language": "Language",
   "settings.save": "Save",
+  "settings.saved_toast": "Counts updated",
+  "settings.theme": "Theme",
+  "theme.light": "Light",
+  "theme.dark": "Dark",
+  "theme.system": "System",
 
   "account.guest": "Guest",
   "account.link": "Link account",
