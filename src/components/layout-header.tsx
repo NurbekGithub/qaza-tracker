@@ -23,7 +23,7 @@ export function LayoutHeader({
   const router = useRouter();
 
   return (
-    <header className="bg-primary pt-safe text-primary-foreground">
+    <header className="shrink-0 bg-primary pt-safe text-primary-foreground">
       <div className="mx-auto flex h-14 max-w-2xl items-center gap-2 px-4">
         {showBack &&
           (backTo ? (

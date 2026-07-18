@@ -10,6 +10,8 @@ import { m } from "#/paraglide/messages";
 import { Layout } from "#/components/layout";
 import { PrayerDialog } from "#/components/prayer-dialog";
 import { HomeTabs } from "#/components/home-tabs";
+import { HomeTabsNav } from "#/components/home-tabs-nav";
+import { Tabs } from "#/components/ui/tabs";
 
 export const Route = createFileRoute("/")({ component: Home });
 
@@ -92,30 +94,32 @@ function Home() {
   const events = data?.prayerEvents ?? [];
 
   return (
-    <Layout title="Qaza tracker" showSettings>
-      {hasNoRows && (
-        <p className="mb-3 text-sm text-muted-foreground">
-          <Link to="/settings" className="underline underline-offset-4 hover:text-foreground">
-            {m["home.set_counts_cta"]()}
-          </Link>
-        </p>
-      )}
+    <Tabs defaultValue="counts">
+      <Layout title="Qaza tracker" showSettings footer={<HomeTabsNav />}>
+        {hasNoRows && (
+          <p className="mb-3 text-sm text-muted-foreground">
+            <Link to="/settings" className="underline underline-offset-4 hover:text-foreground">
+              {m["home.set_counts_cta"]()}
+            </Link>
+          </p>
+        )}
 
-      <HomeTabs
-        isLoading={isLoading}
-        prayers={prayerRows}
-        events={events}
-        onPrayerClick={openDialog}
-      />
+        <HomeTabs
+          isLoading={isLoading}
+          prayers={prayerRows}
+          events={events}
+          onPrayerClick={openDialog}
+        />
 
-      <PrayerDialog
-        prayer={selected}
-        count={selected ? (prayerInfo(selected)?.count ?? 0) : 0}
-        open={selected !== null}
-        onOpenChange={(open) => !open && setSelected(null)}
-        onIncrease={increase}
-        onDecrease={decrease}
-      />
-    </Layout>
+        <PrayerDialog
+          prayer={selected}
+          count={selected ? (prayerInfo(selected)?.count ?? 0) : 0}
+          open={selected !== null}
+          onOpenChange={(open) => !open && setSelected(null)}
+          onIncrease={increase}
+          onDecrease={decrease}
+        />
+      </Layout>
+    </Tabs>
   );
 }
