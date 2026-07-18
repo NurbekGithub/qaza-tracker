@@ -39,7 +39,7 @@ export function PrayerCountsForm() {
   }, [data]);
 
   if (isLoading) {
-    return <div className="text-sm text-muted-foreground">{m["state.loading"]()}</div>;
+    return <p className="text-sm text-muted-foreground">{m["state.loading"]()}</p>;
   }
 
   function serverCount(p: TrackableName): number {

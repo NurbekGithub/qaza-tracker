@@ -33,7 +33,7 @@ function RootComponent() {
   if (isLoading) {
     return (
       <div className="flex min-h-svh items-center justify-center">
-        <div className="text-sm text-muted-foreground">{m["state.loading"]()}</div>
+        <p className="text-sm text-muted-foreground">{m["state.loading"]()}</p>
       </div>
     );
   }
@@ -41,7 +41,7 @@ function RootComponent() {
   if (error) {
     return (
       <div className="flex min-h-svh items-center justify-center p-4">
-        <div className="text-sm text-red-600">{error.message}</div>
+        <p className="text-sm text-red-600">{error.message}</p>
       </div>
     );
   }
@@ -67,7 +67,7 @@ function GuestSignIn() {
 
   return (
     <div className="flex min-h-svh items-center justify-center">
-      <div className="text-sm text-muted-foreground">{m["state.starting"]()}</div>
+      <p className="text-sm text-muted-foreground">{m["state.starting"]()}</p>
     </div>
   );
 }

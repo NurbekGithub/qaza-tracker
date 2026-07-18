@@ -31,9 +31,9 @@ export function PrayerDialog({
       >
         <div className="p-6 pb-4">
           <DialogTitle>{prayer ? trackableName(prayer) : ""}</DialogTitle>
-          <div className="mt-2 text-5xl font-semibold tabular-nums">
+          <p className="mt-2 text-5xl font-semibold tabular-nums">
             <NumberFlow value={count} />
-          </div>
+          </p>
         </div>
         <div className="grid grid-cols-2 gap-px overflow-hidden border-t bg-border">
           <Button

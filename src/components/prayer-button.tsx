@@ -18,12 +18,12 @@ export function PrayerButton({ prayer, count, isDoneToday, onClick }: PrayerButt
       className="h-auto w-full justify-between p-3 text-left"
       onClick={() => onClick(prayer)}
     >
-      <div className="text-base font-medium">{trackableName(prayer)}</div>
+      <span className="text-base font-medium">{trackableName(prayer)}</span>
 
       <div className="flex items-center gap-3">
-        <div className="text-xl font-semibold tabular-nums">
+        <span className="text-xl font-semibold tabular-nums">
           <NumberFlow value={count} />
-        </div>
+        </span>
         {isDoneToday ? (
           <Check className="size-5 text-green-600" />
         ) : (
