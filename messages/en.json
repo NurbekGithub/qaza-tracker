@@ -12,6 +12,10 @@
   "tab.counts": "Counts",
   "tab.log": "Log",
 
+  "home.prayers_title": "Prayers",
+  "home.fasting_title": "Fasting",
+  "fasting.name": "Fasting",
+
   "prayer.name.fajr": "Fajr",
   "prayer.name.zukhr": "Zuhr",
   "prayer.name.asr": "Asr",

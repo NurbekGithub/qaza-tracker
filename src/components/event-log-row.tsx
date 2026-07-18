@@ -1,4 +1,4 @@
-import { type PrayerName, prayerName } from "#/lib/prayers";
+import { type TrackableName, trackableName } from "#/lib/prayers";
 import { formatTime } from "#/lib/date-utils";
 
 import type { InstaQLEntity } from "@instantdb/react";
@@ -17,7 +17,7 @@ export function EventLogRow({ event }: EventLogRowProps) {
 
   return (
     <div className="flex items-center justify-between rounded-md bg-card px-3 py-2 text-sm">
-      <span className="font-medium">{prayerName(event.prayer as PrayerName)}</span>
+      <span className="font-medium">{trackableName(event.prayer as TrackableName)}</span>
       <div className="flex items-center gap-3">
         <span className="tabular-nums font-semibold">{deltaText}</span>
         <span className={`tabular-nums font-semibold ${deltaColor}`}>{delta >= 0 ? "▲" : "▼"}</span>

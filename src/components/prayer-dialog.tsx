@@ -1,18 +1,18 @@
 import { Minus, Plus } from "lucide-react";
 
-import { type PrayerName, prayerName } from "#/lib/prayers";
+import { type TrackableName, trackableName } from "#/lib/prayers";
 import { m } from "#/paraglide/messages";
 import { Button } from "#/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "#/components/ui/dialog";
 import NumberFlow from "@number-flow/react";
 
 type PrayerDialogProps = {
-  prayer: PrayerName | null;
+  prayer: TrackableName | null;
   count: number;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onIncrease: (prayer: PrayerName) => void;
-  onDecrease: (prayer: PrayerName) => void;
+  onIncrease: (prayer: TrackableName) => void;
+  onDecrease: (prayer: TrackableName) => void;
 };
 
 export function PrayerDialog({
@@ -30,7 +30,7 @@ export function PrayerDialog({
         className="top-auto left-0 right-0 bottom-0 max-w-none translate-x-0 translate-y-0 rounded-b-none rounded-t-xl p-0 data-open:animate-in data-open:slide-in-from-bottom data-closed:animate-out data-closed:slide-out-to-bottom sm:top-1/2 sm:left-1/2 sm:right-auto sm:bottom-auto sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl sm:p-6"
       >
         <div className="p-6 pb-4">
-          <DialogTitle>{prayer ? prayerName(prayer) : ""}</DialogTitle>
+          <DialogTitle>{prayer ? trackableName(prayer) : ""}</DialogTitle>
           <div className="mt-2 text-5xl font-semibold tabular-nums">
             <NumberFlow value={count} />
           </div>

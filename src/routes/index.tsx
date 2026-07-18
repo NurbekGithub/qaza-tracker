@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { db, transact } from "#/lib/db";
 import { formatDate } from "#/lib/date-utils";
-import { PRAYERS, type PrayerName, getPrayer } from "#/lib/prayers";
+import { FASTING, PRAYERS, type TrackableName, getPrayer } from "#/lib/prayers";
 import { m } from "#/paraglide/messages";
 import { Layout } from "#/components/layout";
 import { PrayerDialog } from "#/components/prayer-dialog";
@@ -22,11 +22,11 @@ function Home() {
     prayers: { $: { where: { ownerId: user.id } } },
     prayerEvents: { $: { where: { ownerId: user.id } } },
   });
-  const [selected, setSelected] = useState<PrayerName | null>(null);
+  const [selected, setSelected] = useState<TrackableName | null>(null);
 
   const today = formatDate();
 
-  function prayerInfo(p: PrayerName) {
+  function prayerInfo(p: TrackableName) {
     const prayer = getPrayer(data?.prayers, p);
     return {
       name: p,
@@ -35,7 +35,7 @@ function Home() {
     };
   }
 
-  function increase(p: PrayerName) {
+  function increase(p: TrackableName) {
     const newCount = prayerInfo(p).count + 1;
     posthog.capture("prayer_count_increased", {
       prayer: p,
@@ -57,7 +57,7 @@ function Home() {
     ]);
   }
 
-  function decrease(p: PrayerName) {
+  function decrease(p: TrackableName) {
     const { count } = prayerInfo(p);
     if (count <= 0) return;
     const newCount = count - 1;
@@ -82,15 +82,14 @@ function Home() {
     ]);
   }
 
-  function openDialog(p: PrayerName) {
+  function openDialog(p: TrackableName) {
     setSelected(p);
     posthog.capture("prayer_dialog_opened", { prayer: p });
   }
 
   const hasNoRows = !isLoading && (data?.prayers ?? []).length === 0;
-  const prayerRows = PRAYERS.map(
-    (p) => prayerInfo(p) as { name: PrayerName; count: number; isDoneToday: boolean },
-  );
+  const prayerRows = PRAYERS.map((p) => prayerInfo(p));
+  const fastingRow = prayerInfo(FASTING);
   const events = data?.prayerEvents ?? [];
 
   return (
@@ -107,8 +106,9 @@ function Home() {
         <HomeTabs
           isLoading={isLoading}
           prayers={prayerRows}
+          fasting={fastingRow}
           events={events}
-          onPrayerClick={openDialog}
+          onTrackableClick={openDialog}
         />
 
         <PrayerDialog

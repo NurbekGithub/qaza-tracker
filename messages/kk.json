@@ -12,6 +12,10 @@
   "tab.counts": "Санақ",
   "tab.log": "Журнал",
 
+  "home.prayers_title": "Намаздар",
+  "home.fasting_title": "Ораза",
+  "fasting.name": "Ораза",
+
   "prayer.name.fajr": "Таң",
   "prayer.name.zukhr": "Бесін",
   "prayer.name.asr": "Екінті",

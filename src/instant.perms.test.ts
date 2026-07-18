@@ -46,9 +46,7 @@ describe.skipIf(!appId || !adminToken)("user data isolation (live InstantDB perm
   afterAll(async () => {
     if (!admin) return;
     for (const entityId of toDelete) {
-      try {
-        await admin.transact(admin.tx.prayers[entityId].delete());
-      } catch {}
+      await admin.transact(admin.tx.prayers[entityId].delete());
     }
     for (const ownerId of [userA?.id, userB?.id].filter(Boolean)) {
       const res = await admin.query({
@@ -61,9 +59,7 @@ describe.skipIf(!appId || !adminToken)("user data isolation (live InstantDB perm
       ]);
     }
     for (const email of [aEmail, bEmail]) {
-      try {
-        await admin.auth.deleteUser({ email });
-      } catch {}
+      await admin.auth.deleteUser({ email });
     }
   }, 60_000);
 

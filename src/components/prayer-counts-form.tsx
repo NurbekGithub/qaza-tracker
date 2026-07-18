@@ -6,8 +6,10 @@ import { toast } from "sonner";
 import { db, transact } from "#/lib/db";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
-import { getPrayer, PRAYERS, prayerName, type PrayerName } from "#/lib/prayers";
+import { FASTING, getPrayer, PRAYERS, trackableName, type TrackableName } from "#/lib/prayers";
 import { m } from "#/paraglide/messages";
+
+const TRACKABLES: TrackableName[] = [...PRAYERS, FASTING];
 
 export function PrayerCountsForm() {
   const user = db.useUser();
@@ -18,8 +20,8 @@ export function PrayerCountsForm() {
 
   // local form values
   // needed before submit client values
-  const [values, setValues] = useState<Record<PrayerName, number>>(() =>
-    PRAYERS.reduce((acc, p) => ({ ...acc, [p]: 0 }), {} as Record<PrayerName, number>),
+  const [values, setValues] = useState<Record<TrackableName, number>>(() =>
+    TRACKABLES.reduce((acc, p) => ({ ...acc, [p]: 0 }), {} as Record<TrackableName, number>),
   );
 
   // set default values for form
@@ -30,7 +32,7 @@ export function PrayerCountsForm() {
     setValues((prev) => {
       const next = { ...prev };
       for (const p of data.prayers) {
-        next[p.name as PrayerName] = p.count;
+        next[p.name as TrackableName] = p.count;
       }
       return next;
     });
@@ -40,19 +42,19 @@ export function PrayerCountsForm() {
     return <div className="text-sm text-muted-foreground">{m["state.loading"]()}</div>;
   }
 
-  function serverCount(p: PrayerName): number {
+  function serverCount(p: TrackableName): number {
     return getPrayer(data?.prayers, p)?.count ?? 0;
   }
 
-  function hasPrayerCountChanged(p: PrayerName): boolean {
+  function hasPrayerCountChanged(p: TrackableName): boolean {
     return values[p] !== serverCount(p);
   }
 
-  const hasChanges = PRAYERS.some(hasPrayerCountChanged);
+  const hasChanges = TRACKABLES.some(hasPrayerCountChanged);
 
   function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
-    const txs = PRAYERS.filter(hasPrayerCountChanged).flatMap((p) => {
+    const txs = TRACKABLES.filter(hasPrayerCountChanged).flatMap((p) => {
       const value = values[p];
       posthog.capture("prayer_count_set", { prayer: p, value });
       return [
@@ -76,13 +78,13 @@ export function PrayerCountsForm() {
 
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-      {PRAYERS.map((p) => (
+      {TRACKABLES.map((p) => (
         <div key={p} className="flex items-center justify-between gap-3">
-          <label htmlFor={`prayer-${p}`} className="text-base font-medium">
-            {prayerName(p)}
+          <label htmlFor={`trackable-${p}`} className="text-base font-medium">
+            {trackableName(p)}
           </label>
           <Input
-            id={`prayer-${p}`}
+            id={`trackable-${p}`}
             type="number"
             min={0}
             inputMode="numeric"
