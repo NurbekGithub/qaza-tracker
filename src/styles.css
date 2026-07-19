@@ -168,6 +168,17 @@ body {
   --shadow-2xl: 0px 2px 3px 0px hsl(0 0% 5% / 0.45);
 }
 
+@utility ornament-mask {
+  -webkit-mask-image: url("./ornament.svg");
+  mask-image: url("./ornament.svg");
+  -webkit-mask-repeat: repeat-y;
+  mask-repeat: repeat-y;
+  -webkit-mask-size: 100% auto;
+  mask-size: 100% auto;
+  -webkit-mask-position: left top;
+  mask-position: left top;
+}
+
 @utility pt-safe {
   padding-top: env(safe-area-inset-top);
 }
