@@ -38,7 +38,7 @@ export function PrayerDialog({
         <div className="grid grid-cols-2 gap-px overflow-hidden border-t bg-border">
           <Button
             variant="ghost"
-            className="h-20 rounded-none bg-red-600 text-xl font-semibold text-white hover:bg-red-700"
+            className="h-20 rounded-none bg-red-500 text-xl font-semibold text-white hover:bg-red-600"
             onClick={() => prayer && onIncrease(prayer)}
           >
             <Plus className="size-5" />
@@ -46,7 +46,7 @@ export function PrayerDialog({
           </Button>
           <Button
             variant="ghost"
-            className="h-20 rounded-none bg-green-600 text-xl font-semibold text-white hover:bg-green-700"
+            className="h-20 rounded-none bg-emerald-500 text-xl font-semibold text-white hover:bg-emerald-600"
             onClick={() => prayer && onDecrease(prayer)}
             disabled={count <= 0}
           >

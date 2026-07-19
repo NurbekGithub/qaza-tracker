@@ -17,7 +17,7 @@ export function EventLogRow({ event }: EventLogRowProps) {
 
   const valueText = isSet ? value : delta > 0 ? `+${delta}` : `${delta}`;
   const icon = isSet ? "≡" : delta >= 0 ? "▲" : "▼";
-  const color = isSet ? "text-muted-foreground" : delta >= 0 ? "text-green-600" : "text-red-600";
+  const color = isSet ? "text-muted-foreground" : delta >= 0 ? "text-rose-600" : "text-emerald-600";
 
   return (
     <div className="flex items-center justify-between rounded-md bg-card px-3 py-2 text-sm">
