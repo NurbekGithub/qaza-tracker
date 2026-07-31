@@ -1,0 +1,4 @@
+- remove counts, infer all from events
+- test calculator properly
+- make startup faster
+- feedback page and feedback on qaza-calc steps

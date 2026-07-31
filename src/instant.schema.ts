@@ -33,6 +33,17 @@ const _schema = i.schema({
       at: i.number().indexed(),
       ownerId: i.string().indexed(),
     }),
+    qazaProfiles: i.entity({
+      ownerId: i.string().indexed(),
+      birthDate: i.string(),
+      gender: i.string().optional(),
+      pubertyDate: i.string(),
+      pubertyAuto: i.boolean().optional(),
+      prayerStartDate: i.string().optional(),
+      menstruationDays: i.number().optional(),
+      fastingStartDate: i.string().optional(),
+      updatedAt: i.number(),
+    }),
   },
   links: {
     $streams$files: {

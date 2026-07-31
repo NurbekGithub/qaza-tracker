@@ -20,9 +20,6 @@ function Settings() {
       </section>
 
       <section className="mb-8">
-        <h2 className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-          {m["settings.prayer_counts"]()}
-        </h2>
         <PrayerCountsForm />
       </section>
 

@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { db, transact } from "#/lib/db";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
+import { QazaCalcDialog } from "#/components/qaza-calc-dialog";
+import { type QazaCalcResult } from "#/components/qaza-result-step";
 import { FASTING, getPrayer, PRAYERS, trackableName, type TrackableName } from "#/lib/prayers";
 import { m } from "#/paraglide/messages";
 
@@ -17,6 +19,8 @@ export function PrayerCountsForm() {
   const { isLoading, data } = db.useQuery({
     prayers: { $: { where: { ownerId: user.id } } },
   });
+
+  const [calcOpen, setCalcOpen] = useState(false);
 
   // local form values
   // needed before submit client values
@@ -52,6 +56,19 @@ export function PrayerCountsForm() {
 
   const hasChanges = TRACKABLES.some(hasPrayerCountChanged);
 
+  function handleCalcApply(result: QazaCalcResult) {
+    setValues((prev) => {
+      const next = { ...prev };
+      for (const p of PRAYERS) {
+        next[p] = result.prayerCount;
+      }
+      if (result.fastingCount != null) {
+        next[FASTING] = result.fastingCount;
+      }
+      return next;
+    });
+  }
+
   function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     const txs = TRACKABLES.filter(hasPrayerCountChanged).flatMap((p) => {
@@ -77,26 +94,37 @@ export function PrayerCountsForm() {
   }
 
   return (
-    <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-      {TRACKABLES.map((p) => (
-        <div key={p} className="flex items-center justify-between gap-3">
-          <label htmlFor={`trackable-${p}`} className="text-base font-medium">
-            {trackableName(p)}
-          </label>
-          <Input
-            id={`trackable-${p}`}
-            type="number"
-            min={0}
-            inputMode="numeric"
-            className="w-24 text-right tabular-nums"
-            value={values[p]}
-            onChange={(e) => setValues((v) => ({ ...v, [p]: Number(e.target.value) }))}
-          />
-        </div>
-      ))}
-      <Button type="submit" className="mt-2" disabled={!hasChanges}>
-        {m["settings.save"]()}
-      </Button>
-    </form>
+    <>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+          {m["settings.prayer_counts"]()}
+        </h2>
+        <Button type="button" variant="outline" onClick={() => setCalcOpen(true)}>
+          {m["qaza.calc_cta"]()}
+        </Button>
+      </div>
+      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+        {TRACKABLES.map((p) => (
+          <div key={p} className="flex items-center justify-between gap-3">
+            <label htmlFor={`trackable-${p}`} className="text-base font-medium">
+              {trackableName(p)}
+            </label>
+            <Input
+              id={`trackable-${p}`}
+              type="number"
+              min={0}
+              inputMode="numeric"
+              className="w-24 text-right tabular-nums"
+              value={values[p]}
+              onChange={(e) => setValues((v) => ({ ...v, [p]: Number(e.target.value) }))}
+            />
+          </div>
+        ))}
+        <Button type="submit" className="mt-2" disabled={!hasChanges}>
+          {m["settings.save"]()}
+        </Button>
+        <QazaCalcDialog open={calcOpen} onOpenChange={setCalcOpen} onApply={handleCalcApply} />
+      </form>
+    </>
   );
 }

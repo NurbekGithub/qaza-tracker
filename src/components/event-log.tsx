@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import { format, parseISO } from "date-fns";
 
 import { m } from "#/paraglide/messages";
 import { EventLogDay } from "#/components/event-log-day";
@@ -17,7 +17,7 @@ export function EventLog({ events }: EventLogProps) {
 
   const groups = new Map<string, PrayerEventEntity[]>();
   for (const event of sorted) {
-    const dateKey = dayjs(event.at).format("YYYY-MM-DD");
+    const dateKey = format(event.at, "yyyy-MM-dd");
     const list = groups.get(dateKey);
     if (list) {
       list.push(event);
@@ -29,7 +29,7 @@ export function EventLog({ events }: EventLogProps) {
   return (
     <div className="flex flex-col">
       {[...groups.entries()].map(([dateKey, dayEvents]) => {
-        const dateMs = dayjs(dateKey).valueOf();
+        const dateMs = parseISO(dateKey).getTime();
         return <EventLogDay key={dateKey} dateMs={dateMs} events={dayEvents} />;
       })}
     </div>

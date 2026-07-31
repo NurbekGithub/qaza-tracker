@@ -1,6 +1,6 @@
 ---
 name: task-verification
-description: Use before finishing/completing a task in this repo. Run lint, typecheck, and fmt:check with bun and fix what you broke. typecheck is strict with noUnusedLocals/noUnusedParameters.
+description: Use before finishing/completing a task in this repo. Run lint, typecheck with bun and fix what you broke. typecheck is strict with noUnusedLocals/noUnusedParameters.
 ---
 
 # Task verification
