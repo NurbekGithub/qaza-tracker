@@ -14,7 +14,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps["theme"]}
-      className="toaster group"
+      className="toaster group [--offset-top:calc(env(safe-area-inset-top,0px)_+_16px)]! [--mobile-offset-top:calc(env(safe-area-inset-top,0px)_+_16px)]!"
       icons={{
         success: <CircleCheckIcon className="size-4" />,
         info: <InfoIcon className="size-4" />,
