@@ -111,6 +111,12 @@
   "qaza.result.disclaimer": "This is an estimate based on the Umm al-Qura calendar; dates may differ by a day from local moon sighting. Make up your qaza consistently.",
   "qaza.result.apply": "Apply to my counts",
 
+  "qaza.feedback.title": "Found a mistake? Please tell us",
+  "qaza.feedback.placeholder": "Please describe the mistake…",
+  "qaza.feedback.submit": "Send",
+  "qaza.feedback.thanks": "Thank you! We'll take a look shortly.",
+  "qaza.feedback.trigger": "Found a mistake?",
+
   "language.en": "English",
   "language.kk": "Қазақша"
 }

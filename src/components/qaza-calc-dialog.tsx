@@ -11,8 +11,9 @@ import { QazaGenderStep, type QazaGender } from "#/components/qaza-gender-step";
 import { QazaPubertyStep } from "#/components/qaza-puberty-step";
 import { QazaMenstruationStep } from "#/components/qaza-menstruation-step";
 import { QazaResultStep, type QazaCalcResult } from "#/components/qaza-result-step";
+import { QazaFeedbackDialog } from "#/components/qaza-feedback-dialog";
 
-type WizardStep =
+export type WizardStep =
   | "birth"
   | "gender"
   | "puberty"
@@ -90,6 +91,7 @@ export function QazaCalcDialog({ open, onOpenChange, onApply }: QazaCalcDialogPr
           <p className="text-sm text-muted-foreground">{m["state.loading"]()}</p>
         ) : (
           <>
+            <QazaFeedbackDialog step={step} />
             {step === "birth" && (
               <QazaDateStep
                 title={m["qaza.birth.title"]()}

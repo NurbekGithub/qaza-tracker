@@ -111,6 +111,12 @@
   "qaza.result.disclaimer": "Бұл — Үмм әл-Құра күнтізбесі бойынша шамамен есеп; жергілікті ай көрінуінен бір күнге өзгеше болуы мүмкін. Қазаңызды үздіксіз толтырыңыз.",
   "qaza.result.apply": "Санауышыма қолдану",
 
+  "qaza.feedback.title": "Қате таптыңыз ба? Бізге жазыңыз",
+  "qaza.feedback.placeholder": "Өтініш, қатені сипаттап жазыңыз…",
+  "qaza.feedback.submit": "Жіберу",
+  "qaza.feedback.thanks": "Рақмет! Жақын арада қараймыз.",
+  "qaza.feedback.trigger": "Қате таптыңыз ба?",
+
   "language.en": "English",
   "language.kk": "Қазақша"
 }
