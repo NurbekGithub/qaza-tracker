@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import { m } from "#/paraglide/messages";
 import { cn } from "#/lib/utils";
+import { db } from "#/lib/db";
 import { Button } from "#/components/ui/button";
 import { Textarea } from "#/components/ui/textarea";
 
@@ -12,6 +13,7 @@ const SURVEY_ID = import.meta.env.VITE_PUBLIC_POSTHOG_FEEDBACK_SURVEY_ID as stri
 
 export function FeedbackForm() {
   const posthog = usePostHog();
+  const user = db.useUser();
   const [rating, setRating] = useState(0);
   const [text, setText] = useState("");
 
@@ -22,7 +24,9 @@ export function FeedbackForm() {
       posthog.capture("survey sent", {
         $survey_id: SURVEY_ID,
         $survey_response: `${rating}/5${message ? ` — ${message}` : ""}`,
-        source: "home",
+        feedback_type: "App feedback",
+        user_id: user.id,
+        user_email: user.email ?? undefined,
       });
     }
     toast.success(m["feedback.thanks"]());

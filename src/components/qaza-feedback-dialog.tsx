@@ -3,6 +3,7 @@ import { usePostHog } from "@posthog/react";
 import { toast } from "sonner";
 
 import { m } from "#/paraglide/messages";
+import { db } from "#/lib/db";
 import { Button } from "#/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "#/components/ui/dialog";
 import { Textarea } from "#/components/ui/textarea";
@@ -16,6 +17,7 @@ type QazaFeedbackDialogProps = {
 
 export function QazaFeedbackDialog({ step }: QazaFeedbackDialogProps) {
   const posthog = usePostHog();
+  const user = db.useUser();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
 
@@ -26,6 +28,9 @@ export function QazaFeedbackDialog({ step }: QazaFeedbackDialogProps) {
       posthog.capture("survey sent", {
         $survey_id: SURVEY_ID,
         $survey_response: message,
+        feedback_type: "Calculator mistake",
+        user_id: user.id,
+        user_email: user.email ?? undefined,
         step,
       });
     }

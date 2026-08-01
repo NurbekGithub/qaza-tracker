@@ -1,4 +1,4 @@
 - remove counts, infer all from events
 - make startup faster
-- feedback page and feedback on qaza-calc steps
 - improve number input ux
+- posthog on prod
