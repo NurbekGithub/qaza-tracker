@@ -11,6 +11,13 @@
 
   "tab.counts": "Counts",
   "tab.log": "Log",
+  "tab.feedback": "Feedback",
+
+  "feedback.title": "Rate the app",
+  "feedback.placeholder": "Tell us more (optional)…",
+  "feedback.submit": "Send",
+  "feedback.thanks": "Thanks, your feedback is received",
+  "feedback.star_label": "Rate {n} of 5",
 
   "home.prayers_title": "Prayers",
   "home.fasting_title": "Fasting",

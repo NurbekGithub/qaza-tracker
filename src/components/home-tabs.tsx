@@ -3,6 +3,7 @@ import { m } from "#/paraglide/messages";
 import { TabsContent } from "#/components/ui/tabs";
 import { PrayerButton } from "#/components/prayer-button";
 import { EventLog } from "#/components/event-log";
+import { FeedbackForm } from "#/components/feedback-form";
 import type { PrayerEventEntity } from "#/components/event-log-row";
 
 type TrackableInfo = {
@@ -66,6 +67,10 @@ export function HomeTabs({ isLoading, prayers, fasting, events, onTrackableClick
 
       <TabsContent value="log">
         <EventLog events={events} />
+      </TabsContent>
+
+      <TabsContent value="feedback">
+        <FeedbackForm />
       </TabsContent>
     </div>
   );

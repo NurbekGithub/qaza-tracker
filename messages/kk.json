@@ -11,6 +11,13 @@
 
   "tab.counts": "Санақ",
   "tab.log": "Журнал",
+  "tab.feedback": "Пікір",
+
+  "feedback.title": "Қолданбаға баға беріңіз",
+  "feedback.placeholder": "Толығырақ жазыңыз (міндетті емес)…",
+  "feedback.submit": "Жіберу",
+  "feedback.thanks": "Рақмет, пікіріңіз қабылданды",
+  "feedback.star_label": "{n} / 5 баға",
 
   "home.prayers_title": "Намаздар",
   "home.fasting_title": "Ораза",

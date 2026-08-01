@@ -23,6 +23,7 @@ function Home() {
     prayerEvents: { $: { where: { ownerId: user.id } } },
   });
   const [selected, setSelected] = useState<TrackableName | null>(null);
+  const [tab, setTab] = useState("counts");
 
   const today = formatDate();
 
@@ -93,9 +94,9 @@ function Home() {
   const events = data?.prayerEvents ?? [];
 
   return (
-    <Tabs defaultValue="counts">
+    <Tabs value={tab} onValueChange={setTab}>
       <Layout title="Qaza tracker" showSettings footer={<HomeTabsNav />}>
-        {hasNoRows && (
+        {hasNoRows && tab !== "feedback" && (
           <p className="mb-3 text-sm text-muted-foreground">
             <Link to="/settings" className="underline underline-offset-4 hover:text-foreground">
               {m["home.set_counts_cta"]()}
