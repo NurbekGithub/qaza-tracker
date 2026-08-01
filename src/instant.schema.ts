@@ -19,12 +19,6 @@ const _schema = i.schema({
       imageURL: i.string().optional(),
       type: i.string().optional(),
     }),
-    prayers: i.entity({
-      name: i.string().indexed(),
-      count: i.number(),
-      doneDate: i.string().optional(),
-      ownerId: i.string().indexed(),
-    }),
     prayerEvents: i.entity({
       prayer: i.string().indexed(),
       type: i.string().indexed(),

@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { usePostHog } from "@posthog/react";
 import { id } from "@instantdb/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { db, transact } from "#/lib/db";
 import { formatDate } from "#/lib/date-utils";
-import { FASTING, PRAYERS, type TrackableName, getPrayer } from "#/lib/prayers";
+import { deriveCounts, isDoneToday } from "#/lib/prayer-events";
+import { FASTING, PRAYERS, TRACKABLES, type TrackableName } from "#/lib/prayers";
 import { m } from "#/paraglide/messages";
 import { Layout } from "#/components/layout";
 import { PrayerDialog } from "#/components/prayer-dialog";
@@ -19,35 +20,37 @@ function Home() {
   const user = db.useUser();
   const posthog = usePostHog();
   const { isLoading, data } = db.useQuery({
-    prayers: { $: { where: { ownerId: user.id } } },
     prayerEvents: { $: { where: { ownerId: user.id } } },
   });
   const [selected, setSelected] = useState<TrackableName | null>(null);
   const [tab, setTab] = useState("counts");
 
   const today = formatDate();
+  const events = useMemo(() => data?.prayerEvents ?? [], [data?.prayerEvents]);
+  const counts = useMemo(() => deriveCounts(events), [events]);
+  const doneToday = useMemo(
+    () =>
+      Object.fromEntries(TRACKABLES.map((p) => [p, isDoneToday(events, p, today)])) as Record<
+        TrackableName,
+        boolean
+      >,
+    [events, today],
+  );
 
   function prayerInfo(p: TrackableName) {
-    const prayer = getPrayer(data?.prayers, p);
     return {
       name: p,
-      count: prayer?.count ?? 0,
-      isDoneToday: prayer?.doneDate === today,
+      count: counts[p],
+      isDoneToday: doneToday[p],
     };
   }
 
   function increase(p: TrackableName) {
-    const newCount = prayerInfo(p).count + 1;
     posthog.capture("prayer_count_increased", {
       prayer: p,
-      new_count: newCount,
+      new_count: counts[p] + 1,
     });
     transact([
-      db.tx.prayers[getPrayer(data?.prayers, p)?.id ?? id()].update({
-        name: p,
-        count: newCount,
-        ownerId: user.id,
-      }),
       db.tx.prayerEvents[id()].create({
         prayer: p,
         type: "adjust",
@@ -59,20 +62,12 @@ function Home() {
   }
 
   function decrease(p: TrackableName) {
-    const { count } = prayerInfo(p);
-    if (count <= 0) return;
-    const newCount = count - 1;
+    if (counts[p] <= 0) return;
     posthog.capture("prayer_count_decreased", {
       prayer: p,
-      new_count: newCount,
+      new_count: counts[p] - 1,
     });
     transact([
-      db.tx.prayers[getPrayer(data?.prayers, p)?.id ?? id()].update({
-        name: p,
-        count: newCount,
-        doneDate: today,
-        ownerId: user.id,
-      }),
       db.tx.prayerEvents[id()].create({
         prayer: p,
         type: "adjust",
@@ -88,10 +83,9 @@ function Home() {
     posthog.capture("prayer_dialog_opened", { prayer: p });
   }
 
-  const hasNoRows = !isLoading && (data?.prayers ?? []).length === 0;
+  const hasNoRows = !isLoading && events.length === 0;
   const prayerRows = PRAYERS.map((p) => prayerInfo(p));
   const fastingRow = prayerInfo(FASTING);
-  const events = data?.prayerEvents ?? [];
 
   return (
     <Tabs value={tab} onValueChange={setTab}>
@@ -114,7 +108,7 @@ function Home() {
 
         <PrayerDialog
           prayer={selected}
-          count={selected ? (prayerInfo(selected)?.count ?? 0) : 0}
+          count={selected ? counts[selected] : 0}
           open={selected !== null}
           onOpenChange={(open) => !open && setSelected(null)}
           onIncrease={increase}

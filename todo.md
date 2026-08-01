@@ -1,4 +1,4 @@
-- remove counts, infer all from events
 - make startup faster
 - improve number input ux
-- posthog on prod
+- safar prayer counts
+- ability to inc/decr multiple at once

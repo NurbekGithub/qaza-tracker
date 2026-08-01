@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { id } from "@instantdb/react";
 import { usePostHog } from "@posthog/react";
 import { toast } from "sonner";
@@ -8,16 +8,15 @@ import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
 import { QazaCalcDialog } from "#/components/qaza-calc-dialog";
 import { type QazaCalcResult } from "#/components/qaza-result-step";
-import { FASTING, getPrayer, PRAYERS, trackableName, type TrackableName } from "#/lib/prayers";
+import { deriveCounts } from "#/lib/prayer-events";
+import { FASTING, PRAYERS, TRACKABLES, trackableName, type TrackableName } from "#/lib/prayers";
 import { m } from "#/paraglide/messages";
-
-const TRACKABLES: TrackableName[] = [...PRAYERS, FASTING];
 
 export function PrayerCountsForm() {
   const user = db.useUser();
   const posthog = usePostHog();
   const { isLoading, data } = db.useQuery({
-    prayers: { $: { where: { ownerId: user.id } } },
+    prayerEvents: { $: { where: { ownerId: user.id } } },
   });
 
   const [calcOpen, setCalcOpen] = useState(false);
@@ -33,25 +32,17 @@ export function PrayerCountsForm() {
   // needed to update client values after submit
   useEffect(() => {
     if (!data) return;
-    setValues((prev) => {
-      const next = { ...prev };
-      for (const p of data.prayers) {
-        next[p.name as TrackableName] = p.count;
-      }
-      return next;
-    });
+    setValues(deriveCounts(data.prayerEvents));
   }, [data]);
+
+  const counts = useMemo(() => deriveCounts(data?.prayerEvents ?? []), [data?.prayerEvents]);
 
   if (isLoading) {
     return <p className="text-sm text-muted-foreground">{m["state.loading"]()}</p>;
   }
 
-  function serverCount(p: TrackableName): number {
-    return getPrayer(data?.prayers, p)?.count ?? 0;
-  }
-
   function hasPrayerCountChanged(p: TrackableName): boolean {
-    return values[p] !== serverCount(p);
+    return values[p] !== counts[p];
   }
 
   const hasChanges = TRACKABLES.some(hasPrayerCountChanged);
@@ -71,23 +62,16 @@ export function PrayerCountsForm() {
 
   function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
-    const txs = TRACKABLES.filter(hasPrayerCountChanged).flatMap((p) => {
+    const txs = TRACKABLES.filter(hasPrayerCountChanged).map((p) => {
       const value = values[p];
       posthog.capture("prayer_count_set", { prayer: p, value });
-      return [
-        db.tx.prayers[getPrayer(data?.prayers, p)?.id ?? id()].update({
-          name: p,
-          count: value,
-          ownerId: user.id,
-        }),
-        db.tx.prayerEvents[id()].create({
-          prayer: p,
-          type: "set",
-          value,
-          at: Date.now(),
-          ownerId: user.id,
-        }),
-      ];
+      return db.tx.prayerEvents[id()].create({
+        prayer: p,
+        type: "set",
+        value,
+        at: Date.now(),
+        ownerId: user.id,
+      });
     });
     transact(txs);
     toast.success(m["settings.saved_toast"]());

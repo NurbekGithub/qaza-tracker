@@ -35,9 +35,11 @@ describe.skipIf(!appId || !adminToken)("user data isolation (live InstantDB perm
     seedId = id();
     toDelete.push(seedId);
     await admin.transact(
-      admin.tx.prayers[seedId].update({
-        name: "fajr",
-        count: 5,
+      admin.tx.prayerEvents[seedId].create({
+        prayer: "fajr",
+        type: "set",
+        value: 5,
+        at: 1,
         ownerId: userA.id,
       }),
     );
@@ -46,104 +48,104 @@ describe.skipIf(!appId || !adminToken)("user data isolation (live InstantDB perm
   afterAll(async () => {
     if (!admin) return;
     for (const entityId of toDelete) {
-      await admin.transact(admin.tx.prayers[entityId].delete());
+      await admin.transact(admin.tx.prayerEvents[entityId].delete());
     }
     for (const ownerId of [userA?.id, userB?.id].filter(Boolean)) {
       const res = await admin.query({
-        prayers: { $: { where: { ownerId } } },
         prayerEvents: { $: { where: { ownerId } } },
       });
-      await admin.transact([
-        ...res.prayers.map((p) => admin.tx.prayers[p.id].delete()),
-        ...res.prayerEvents.map((e) => admin.tx.prayerEvents[e.id].delete()),
-      ]);
+      await admin.transact(res.prayerEvents.map((e) => admin.tx.prayerEvents[e.id].delete()));
     }
     for (const email of [aEmail, bEmail]) {
       await admin.auth.deleteUser({ email });
     }
   }, 60_000);
 
-  test("user B cannot view user A's prayers", async () => {
+  test("user B cannot view user A's prayer events", async () => {
     const bDb = admin.asUser({ token: tokenB });
-    const { prayers } = await bDb.query({ prayers: {} });
-    expect(prayers.some((p) => p.id === seedId)).toBe(false);
-    expect(prayers.some((p) => p.ownerId === userA.id)).toBe(false);
+    const { prayerEvents } = await bDb.query({ prayerEvents: {} });
+    expect(prayerEvents.some((e) => e.id === seedId)).toBe(false);
+    expect(prayerEvents.some((e) => e.ownerId === userA.id)).toBe(false);
   }, 30_000);
 
-  test("user B cannot update user A's prayer", async () => {
+  test("user B cannot update user A's prayer event", async () => {
     const aDb = admin.asUser({ token: tokenA });
     const before = await aDb.query({
-      prayers: { $: { where: { ownerId: userA.id } } },
+      prayerEvents: { $: { where: { ownerId: userA.id } } },
     });
-    const beforeCount = before.prayers.find((p) => p.id === seedId)?.count;
+    const beforeValue = before.prayerEvents.find((e) => e.id === seedId)?.value;
 
     const bDb = admin.asUser({ token: tokenB });
-    await expect(bDb.transact(bDb.tx.prayers[seedId].update({ count: 999 }))).rejects.toThrow(
+    await expect(bDb.transact(bDb.tx.prayerEvents[seedId].update({ value: 999 }))).rejects.toThrow(
       DENIED,
     );
 
     const after = await aDb.query({
-      prayers: { $: { where: { ownerId: userA.id } } },
+      prayerEvents: { $: { where: { ownerId: userA.id } } },
     });
-    const afterCount = after.prayers.find((p) => p.id === seedId)?.count;
-    expect(afterCount).toBe(beforeCount);
-    expect(afterCount).not.toBe(999);
+    const afterValue = after.prayerEvents.find((e) => e.id === seedId)?.value;
+    expect(afterValue).toBe(beforeValue);
+    expect(afterValue).not.toBe(999);
   }, 30_000);
 
-  test("user B cannot delete user A's prayer", async () => {
+  test("user B cannot delete user A's prayer event", async () => {
     const bDb = admin.asUser({ token: tokenB });
-    await expect(bDb.transact(bDb.tx.prayers[seedId].delete())).rejects.toThrow(DENIED);
+    await expect(bDb.transact(bDb.tx.prayerEvents[seedId].delete())).rejects.toThrow(DENIED);
 
     const aDb = admin.asUser({ token: tokenA });
-    const { prayers } = await aDb.query({
-      prayers: { $: { where: { ownerId: userA.id } } },
+    const { prayerEvents } = await aDb.query({
+      prayerEvents: { $: { where: { ownerId: userA.id } } },
     });
-    expect(prayers.some((p) => p.id === seedId)).toBe(true);
+    expect(prayerEvents.some((e) => e.id === seedId)).toBe(true);
   }, 30_000);
 
-  test("user B cannot create a prayer owned by user A (no ownership spoofing)", async () => {
+  test("user B cannot create a prayer event owned by user A (no ownership spoofing)", async () => {
     const spoofId = id();
     const bDb = admin.asUser({ token: tokenB });
     await expect(
       bDb.transact(
-        bDb.tx.prayers[spoofId].update({
-          name: "asr",
-          count: 1,
+        bDb.tx.prayerEvents[spoofId].create({
+          prayer: "asr",
+          type: "adjust",
+          delta: 1,
+          at: 1,
           ownerId: userA.id,
         }),
       ),
     ).rejects.toThrow(DENIED);
 
     const res = await admin.query({
-      prayers: { $: { where: { ownerId: userA.id } } },
+      prayerEvents: { $: { where: { ownerId: userA.id } } },
     });
-    expect(res.prayers.some((p) => p.id === spoofId)).toBe(false);
+    expect(res.prayerEvents.some((e) => e.id === spoofId)).toBe(false);
   }, 30_000);
 
-  test("user A can update their own prayer (control)", async () => {
+  test("user A can update their own prayer event (control)", async () => {
     const aDb = admin.asUser({ token: tokenA });
-    await aDb.transact(aDb.tx.prayers[seedId].update({ count: 42 }));
-    const { prayers } = await aDb.query({
-      prayers: { $: { where: { ownerId: userA.id } } },
+    await aDb.transact(aDb.tx.prayerEvents[seedId].update({ value: 42 }));
+    const { prayerEvents } = await aDb.query({
+      prayerEvents: { $: { where: { ownerId: userA.id } } },
     });
-    expect(prayers.find((p) => p.id === seedId)?.count).toBe(42);
+    expect(prayerEvents.find((e) => e.id === seedId)?.value).toBe(42);
   }, 30_000);
 
-  test("user B can manage their own prayers (control)", async () => {
+  test("user B can manage their own prayer events (control)", async () => {
     const bDb = admin.asUser({ token: tokenB });
     ownBId = id();
     toDelete.push(ownBId);
     await bDb.transact(
-      bDb.tx.prayers[ownBId].update({
-        name: "magrib",
-        count: 3,
+      bDb.tx.prayerEvents[ownBId].create({
+        prayer: "magrib",
+        type: "set",
+        value: 3,
+        at: 1,
         ownerId: userB.id,
       }),
     );
-    await bDb.transact(bDb.tx.prayers[ownBId].update({ count: 8 }));
-    const { prayers } = await bDb.query({
-      prayers: { $: { where: { ownerId: userB.id } } },
+    await bDb.transact(bDb.tx.prayerEvents[ownBId].update({ value: 8 }));
+    const { prayerEvents } = await bDb.query({
+      prayerEvents: { $: { where: { ownerId: userB.id } } },
     });
-    expect(prayers.find((p) => p.id === ownBId)?.count).toBe(8);
+    expect(prayerEvents.find((e) => e.id === ownBId)?.value).toBe(8);
   }, 30_000);
 });

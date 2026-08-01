@@ -1,6 +1,3 @@
-import type { AppSchema } from "#/instant.schema";
-import type { InstaQLEntity } from "@instantdb/react";
-
 import { m } from "#/paraglide/messages";
 
 export const PRAYERS = ["fajr", "zukhr", "asr", "magrib", "isha", "wajib"] as const;
@@ -9,7 +6,8 @@ export const FASTING = "fasting";
 export type PrayerName = (typeof PRAYERS)[number];
 export type FastingName = typeof FASTING;
 export type TrackableName = PrayerName | FastingName;
-export type PrayerEntity = InstaQLEntity<AppSchema, "prayers">;
+
+export const TRACKABLES: TrackableName[] = [...PRAYERS, FASTING];
 
 const PRAYER_NAME_KEYS = {
   fajr: "prayer.name.fajr",
@@ -26,8 +24,4 @@ export function prayerName(p: PrayerName): string {
 
 export function trackableName(t: TrackableName): string {
   return t === FASTING ? m["fasting.name"]() : prayerName(t);
-}
-
-export function getPrayer(prayers: PrayerEntity[] | undefined, name: TrackableName) {
-  return (prayers ?? []).find((r) => r.name === name);
 }
