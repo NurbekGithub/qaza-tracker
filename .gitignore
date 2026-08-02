@@ -13,3 +13,5 @@ src/paraglide
 __unconfig*
 todos.json
 opencode.json
+
+emails/preview.html

@@ -27,6 +27,11 @@ const _schema = i.schema({
       at: i.number().indexed(),
       ownerId: i.string().indexed(),
     }),
+    userPrefs: i.entity({
+      ownerId: i.string().indexed().unique(),
+      locale: i.string().optional(),
+      updatedAt: i.number(),
+    }),
     qazaProfiles: i.entity({
       ownerId: i.string().indexed(),
       birthDate: i.string(),

@@ -16,11 +16,15 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "typecheck": "tsc --noEmit",
-    "i18n": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide --emit-ts-declarations"
+    "i18n": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide --emit-ts-declarations",
+    "email:preview": "bun run scripts/send-weekly-email.ts --preview",
+    "email:test": "bun run scripts/send-weekly-email.ts",
+    "email:send-all": "bun run scripts/send-weekly-email.ts --all"
   },
   "dependencies": {
     "@base-ui/react": "1.6.0",
     "@fontsource-variable/inter": "5.2.8",
+    "@instantdb/admin": "1.0.49",
     "@instantdb/react": "1.0.49",
     "@number-flow/react": "0.6.1",
     "@react-oauth/google": "0.13.5",
@@ -44,7 +48,6 @@
   },
   "devDependencies": {
     "@inlang/paraglide-js": "2.21.0",
-    "@instantdb/admin": "1.0.49",
     "@tailwindcss/typography": "0.5.20",
     "@tanstack/devtools-vite": "0.8.1",
     "@tanstack/router-cli": "1.167.18",

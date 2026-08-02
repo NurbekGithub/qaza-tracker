@@ -4,6 +4,8 @@ import { getLocale, setLocale, locales } from "#/paraglide/runtime";
 import { m } from "#/paraglide/messages";
 import { buttonVariants } from "#/components/ui/button";
 import { SelectContent, SelectItem } from "#/components/ui/select";
+import { db } from "#/lib/db";
+import { saveLocalePref } from "#/lib/locale-prefs";
 
 const LABELS: Record<(typeof locales)[number], () => string> = {
   en: () => m["language.en"](),
@@ -11,11 +13,14 @@ const LABELS: Record<(typeof locales)[number], () => string> = {
 };
 
 export function LanguageMenuButton() {
+  const { user } = db.useAuth();
   return (
     <SelectPrimitive.Root
       value={getLocale()}
       onValueChange={(v) => {
-        if (v) setLocale(v);
+        if (!v) return;
+        setLocale(v);
+        if (user) saveLocalePref(user.id, v);
       }}
     >
       <SelectPrimitive.Trigger
