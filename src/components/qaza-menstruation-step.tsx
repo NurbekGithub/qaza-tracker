@@ -38,7 +38,8 @@ export function QazaMenstruationStep({
           max={MAX_DAYS}
           inputMode="numeric"
           className="w-24 text-right tabular-nums"
-          value={value}
+          placeholder="0"
+          value={value === 0 ? "" : value}
           onChange={(e) => onDaysChange(Number(e.target.value))}
         />
         <p className="text-xs text-muted-foreground">{m["qaza.menstruation.hint"]()}</p>

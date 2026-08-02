@@ -113,7 +113,8 @@ export function PrayerCountsForm() {
               min={0}
               inputMode="numeric"
               className="w-24 text-right tabular-nums"
-              value={values[p]}
+              placeholder="0"
+              value={values[p] === 0 ? "" : values[p]}
               onChange={(e) => setValues((v) => ({ ...v, [p]: Number(e.target.value) }))}
             />
           </div>
@@ -130,7 +131,8 @@ export function PrayerCountsForm() {
                 min={0}
                 inputMode="numeric"
                 className="w-24 text-right tabular-nums"
-                value={values[p]}
+                placeholder="0"
+                value={values[p] === 0 ? "" : values[p]}
                 onChange={(e) => setValues((v) => ({ ...v, [p]: Number(e.target.value) }))}
               />
             </div>
