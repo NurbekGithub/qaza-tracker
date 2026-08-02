@@ -9,7 +9,6 @@ type NumberInputProps = {
   onValueChange: (value: number) => void;
   min?: number;
   max?: number;
-  step?: number;
   disabled?: boolean;
   className?: string;
   "aria-label"?: string;
@@ -21,7 +20,6 @@ export function NumberInput({
   onValueChange,
   min,
   max,
-  step = 1,
   disabled,
   className,
   "aria-label": ariaLabel,
@@ -34,7 +32,9 @@ export function NumberInput({
       onValueChange={(v) => onValueChange(v ?? min ?? 0)}
       min={min}
       max={max}
-      step={step}
+      step={1}
+      smallStep={1}
+      snapOnStep
       disabled={disabled}
       format={{ useGrouping: false }}
     >
@@ -44,10 +44,7 @@ export function NumberInput({
       >
         <NumberField.Input
           aria-label={ariaLabel}
-          className="min-w-8 flex-1 bg-transparent px-1 text-center text-base tabular-nums outline-none md:text-sm"
-          onFocus={(e) => {
-            if (value === 0) e.currentTarget.select();
-          }}
+          className="min-w-8 flex-1 bg-transparent px-1 text-center text-base tabular-nums outline-none placeholder:text-muted-foreground md:text-sm"
         />
         <NumberField.ScrubArea
           direction="vertical"

@@ -1,2 +1,2 @@
 - make startup faster
-- improve number input ux
+- safar input ux that auto decr main prayer count
