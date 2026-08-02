@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { id } from "@instantdb/react";
-import { usePostHog } from "@posthog/react";
+import { usePostHog } from "#/lib/analytics";
 import { toast } from "sonner";
 
 import { db, transact } from "#/lib/db";

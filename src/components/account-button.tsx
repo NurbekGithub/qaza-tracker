@@ -4,7 +4,7 @@ import { db } from "#/lib/db";
 import { m } from "#/paraglide/messages";
 import { Button } from "#/components/ui/button";
 import { UpgradeAccountDialog } from "#/components/upgrade-account-dialog";
-import { usePostHog } from "@posthog/react";
+import { usePostHog } from "#/lib/analytics";
 
 export function AccountButton() {
   const [open, setOpen] = useState(false);

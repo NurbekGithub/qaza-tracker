@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { usePostHog } from "@posthog/react";
+import { usePostHog } from "#/lib/analytics";
 import { id } from "@instantdb/react";
 import { useMemo, useState } from "react";
 

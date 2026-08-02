@@ -5,7 +5,7 @@ import { GoogleLogin, GoogleOAuthProvider, type CredentialResponse } from "@reac
 import { db } from "#/lib/db";
 import { extractError } from "#/lib/error-utils";
 import { m } from "#/paraglide/messages";
-import { usePostHog } from "@posthog/react";
+import { usePostHog } from "#/lib/analytics";
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_NAME } from "#/constants";
 
 type GoogleSignInButtonProps = {
