@@ -1,6 +1,6 @@
 import { m } from "#/paraglide/messages";
 import { Button } from "#/components/ui/button";
-import { Input } from "#/components/ui/input";
+import { NumberInput } from "#/components/ui/number-field";
 import { DialogTitle } from "#/components/ui/dialog";
 
 type QazaSafarStepProps = {
@@ -29,15 +29,12 @@ export function QazaSafarStep({
         <label htmlFor="qaza-safar-days" className="text-sm font-medium">
           {m["qaza.safar.days_label"]()}
         </label>
-        <Input
+        <NumberInput
           id="qaza-safar-days"
-          type="number"
           min={0}
           max={maxDays}
-          inputMode="numeric"
-          className="w-24 text-right tabular-nums"
           value={value}
-          onChange={(e) => onDaysChange(Number(e.target.value))}
+          onValueChange={onDaysChange}
         />
         <p className="text-xs text-muted-foreground">{m["qaza.safar.hint"]()}</p>
       </div>

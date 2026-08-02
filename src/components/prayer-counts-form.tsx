@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { db, transact } from "#/lib/db";
 import { Button } from "#/components/ui/button";
-import { Input } from "#/components/ui/input";
+import { NumberInput } from "#/components/ui/number-field";
 import { QazaCalcDialog } from "#/components/qaza-calc-dialog";
 import { type QazaCalcResult } from "#/components/qaza-result-step";
 import { SafarSection } from "#/components/safar-section";
@@ -107,14 +107,11 @@ export function PrayerCountsForm() {
             <label htmlFor={`trackable-${p}`} className="text-base font-medium">
               {trackableName(p)}
             </label>
-            <Input
+            <NumberInput
               id={`trackable-${p}`}
-              type="number"
               min={0}
-              inputMode="numeric"
-              className="w-24 text-right tabular-nums"
               value={values[p]}
-              onChange={(e) => setValues((v) => ({ ...v, [p]: Number(e.target.value) }))}
+              onValueChange={(n) => setValues((v) => ({ ...v, [p]: n }))}
             />
           </div>
         ))}
@@ -124,14 +121,11 @@ export function PrayerCountsForm() {
               <label htmlFor={`trackable-${p}`} className="text-base font-medium">
                 {trackableName(p)}
               </label>
-              <Input
+              <NumberInput
                 id={`trackable-${p}`}
-                type="number"
                 min={0}
-                inputMode="numeric"
-                className="w-24 text-right tabular-nums"
                 value={values[p]}
-                onChange={(e) => setValues((v) => ({ ...v, [p]: Number(e.target.value) }))}
+                onValueChange={(n) => setValues((v) => ({ ...v, [p]: n }))}
               />
             </div>
           ))}

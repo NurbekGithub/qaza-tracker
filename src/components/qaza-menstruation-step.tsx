@@ -1,6 +1,6 @@
 import { m } from "#/paraglide/messages";
 import { Button } from "#/components/ui/button";
-import { Input } from "#/components/ui/input";
+import { NumberInput } from "#/components/ui/number-field";
 import { DialogTitle } from "#/components/ui/dialog";
 
 const MIN_DAYS = 3;
@@ -31,15 +31,12 @@ export function QazaMenstruationStep({
         <label htmlFor="qaza-menstruation-days" className="text-sm font-medium">
           {m["qaza.menstruation.days_label"]()}
         </label>
-        <Input
+        <NumberInput
           id="qaza-menstruation-days"
-          type="number"
           min={MIN_DAYS}
           max={MAX_DAYS}
-          inputMode="numeric"
-          className="w-24 text-right tabular-nums"
           value={value}
-          onChange={(e) => onDaysChange(Number(e.target.value))}
+          onValueChange={onDaysChange}
         />
         <p className="text-xs text-muted-foreground">{m["qaza.menstruation.hint"]()}</p>
       </div>
