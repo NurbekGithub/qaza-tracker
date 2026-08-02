@@ -11,6 +11,7 @@ import {
   ramadanStart,
   ramadanStartInGregorianYear,
   ramadanStartsInGregorianYear,
+  splitSafarDays,
 } from "#/lib/qaza-calc";
 
 const iso = (date: Date) => format(date, "yyyy-MM-dd");
@@ -101,6 +102,29 @@ describe("computePrayerQaza", () => {
     });
     expect(result.totalDays).toBe(0);
     expect(result.finalDays).toBe(0);
+  });
+});
+
+describe("splitSafarDays", () => {
+  test("moves safar days out of the resident count", () => {
+    expect(splitSafarDays(1000, 90)).toEqual({ residentDays: 910, safarDays: 90 });
+  });
+
+  test("treats null and undefined as zero", () => {
+    expect(splitSafarDays(100, null)).toEqual({ residentDays: 100, safarDays: 0 });
+    expect(splitSafarDays(100, undefined)).toEqual({ residentDays: 100, safarDays: 0 });
+  });
+
+  test("clamps safar days to the final days", () => {
+    expect(splitSafarDays(50, 80)).toEqual({ residentDays: 0, safarDays: 50 });
+  });
+
+  test("clamps negative safar days at zero", () => {
+    expect(splitSafarDays(50, -10)).toEqual({ residentDays: 50, safarDays: 0 });
+  });
+
+  test("keeps everything resident when final days are zero", () => {
+    expect(splitSafarDays(0, 30)).toEqual({ residentDays: 0, safarDays: 0 });
   });
 });
 

@@ -10,8 +10,10 @@ import { QazaFastingStartStep } from "#/components/qaza-fasting-start-step";
 import { QazaGenderStep, type QazaGender } from "#/components/qaza-gender-step";
 import { QazaPubertyStep } from "#/components/qaza-puberty-step";
 import { QazaMenstruationStep } from "#/components/qaza-menstruation-step";
+import { QazaSafarStep } from "#/components/qaza-safar-step";
 import { QazaResultStep, type QazaCalcResult } from "#/components/qaza-result-step";
 import { QazaFeedbackDialog } from "#/components/qaza-feedback-dialog";
+import { computePrayerQaza } from "#/lib/qaza-calc";
 
 export type WizardStep =
   | "birth"
@@ -19,6 +21,7 @@ export type WizardStep =
   | "puberty"
   | "prayerStart"
   | "menstruation"
+  | "safar"
   | "fastingStart"
   | "result";
 
@@ -44,6 +47,7 @@ export function QazaCalcDialog({ open, onOpenChange, onApply }: QazaCalcDialogPr
   const [pubertyAuto, setPubertyAuto] = useState(false);
   const [prayerStart, setPrayerStart] = useState<Date>();
   const [menstruationDays, setMenstruationDays] = useState<number | null>(null);
+  const [safarDays, setSafarDays] = useState<number | null>(null);
   const [fastingStart, setFastingStart] = useState<Date>();
 
   useEffect(() => {
@@ -56,6 +60,7 @@ export function QazaCalcDialog({ open, onOpenChange, onApply }: QazaCalcDialogPr
     setPubertyAuto(p?.pubertyAuto ?? false);
     setPrayerStart(p?.prayerStartDate ? parseISO(p.prayerStartDate) : undefined);
     setMenstruationDays(p?.menstruationDays ?? null);
+    setSafarDays(p?.safarDays ?? null);
     setFastingStart(p?.fastingStartDate ? parseISO(p.fastingStartDate) : undefined);
   }, [open, data]);
 
@@ -71,6 +76,7 @@ export function QazaCalcDialog({ open, onOpenChange, onApply }: QazaCalcDialogPr
         prayerStartDate: format(prayerStart, "yyyy-MM-dd"),
         ...(fastingStart ? { fastingStartDate: format(fastingStart, "yyyy-MM-dd") } : {}),
         ...(gender === "female" && menstruationDays != null ? { menstruationDays } : {}),
+        ...(safarDays != null ? { safarDays } : {}),
         updatedAt: Date.now(),
       }),
     );
@@ -131,7 +137,7 @@ export function QazaCalcDialog({ open, onOpenChange, onApply }: QazaCalcDialogPr
                 title={m["qaza.prayer_start.title"]()}
                 selected={prayerStart}
                 onSelect={setPrayerStart}
-                onNext={() => setStep(gender === "female" ? "menstruation" : "fastingStart")}
+                onNext={() => setStep(gender === "female" ? "menstruation" : "safar")}
                 onBack={() => setStep("puberty")}
                 startMonth={puberty}
                 endMonth={today}
@@ -142,12 +148,31 @@ export function QazaCalcDialog({ open, onOpenChange, onApply }: QazaCalcDialogPr
               <QazaMenstruationStep
                 days={menstruationDays}
                 onDaysChange={setMenstruationDays}
-                onNext={() => setStep("fastingStart")}
+                onNext={() => setStep("safar")}
                 onSkip={() => {
                   setMenstruationDays(null);
-                  setStep("fastingStart");
+                  setStep("safar");
                 }}
                 onBack={() => setStep("prayerStart")}
+              />
+            )}
+            {step === "safar" && puberty && prayerStart && (
+              <QazaSafarStep
+                days={safarDays}
+                maxDays={
+                  computePrayerQaza({
+                    pubertyDate: puberty,
+                    prayerStartDate: prayerStart,
+                    menstruationDaysPerMonth: gender === "female" ? menstruationDays : null,
+                  }).finalDays
+                }
+                onDaysChange={setSafarDays}
+                onNext={() => setStep("fastingStart")}
+                onSkip={() => {
+                  setSafarDays(null);
+                  setStep("fastingStart");
+                }}
+                onBack={() => setStep(gender === "female" ? "menstruation" : "prayerStart")}
               />
             )}
             {step === "fastingStart" && puberty && (
@@ -157,7 +182,7 @@ export function QazaCalcDialog({ open, onOpenChange, onApply }: QazaCalcDialogPr
                 selected={fastingStart}
                 onSelect={setFastingStart}
                 onNext={() => setStep("result")}
-                onBack={() => setStep(gender === "female" ? "menstruation" : "prayerStart")}
+                onBack={() => setStep("safar")}
                 onSkip={() => {
                   setFastingStart(undefined);
                   setStep("result");
@@ -170,6 +195,7 @@ export function QazaCalcDialog({ open, onOpenChange, onApply }: QazaCalcDialogPr
                 pubertyDate={puberty}
                 prayerStartDate={prayerStart}
                 menstruationDays={gender === "female" ? menstruationDays : null}
+                safarDays={safarDays}
                 fastingStartDate={fastingStart}
                 onApply={handleApply}
                 onBack={() => setStep("fastingStart")}

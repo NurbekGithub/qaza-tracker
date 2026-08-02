@@ -2,6 +2,7 @@ import type { TrackableName } from "#/lib/prayers";
 import { m } from "#/paraglide/messages";
 import { TabsContent } from "#/components/ui/tabs";
 import { PrayerButton } from "#/components/prayer-button";
+import { SafarSection } from "#/components/safar-section";
 import { EventLog } from "#/components/event-log";
 import { FeedbackForm } from "#/components/feedback-form";
 import type { PrayerEventEntity } from "#/components/event-log-row";
@@ -15,12 +16,21 @@ type TrackableInfo = {
 type HomeTabsProps = {
   isLoading: boolean;
   prayers: TrackableInfo[];
+  safar: TrackableInfo[];
   fasting: TrackableInfo;
   events: PrayerEventEntity[];
   onTrackableClick: (name: TrackableName) => void;
 };
 
-export function HomeTabs({ isLoading, prayers, fasting, events, onTrackableClick }: HomeTabsProps) {
+export function HomeTabs({
+  isLoading,
+  prayers,
+  safar,
+  fasting,
+  events,
+  onTrackableClick,
+}: HomeTabsProps) {
+  const safarTotal = safar.reduce((sum, p) => sum + p.count, 0);
   return (
     <div className="flex flex-col gap-3">
       <TabsContent value="counts">
@@ -46,6 +56,22 @@ export function HomeTabs({ isLoading, prayers, fasting, events, onTrackableClick
               })}
             </div>
           </section>
+
+          {isLoading ? (
+            <div className="h-10 w-full rounded-md bg-muted"></div>
+          ) : (
+            <SafarSection total={safarTotal}>
+              {safar.map((p) => (
+                <PrayerButton
+                  key={p.name}
+                  prayer={p.name}
+                  count={p.count}
+                  isDoneToday={p.isDoneToday}
+                  onClick={onTrackableClick}
+                />
+              ))}
+            </SafarSection>
+          )}
 
           <section>
             <h2 className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">

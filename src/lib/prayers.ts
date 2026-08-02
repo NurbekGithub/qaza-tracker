@@ -5,9 +5,34 @@ export const FASTING = "fasting";
 
 export type PrayerName = (typeof PRAYERS)[number];
 export type FastingName = typeof FASTING;
-export type TrackableName = PrayerName | FastingName;
 
-export const TRACKABLES: TrackableName[] = [...PRAYERS, FASTING];
+export const SAFAR_PRAYERS = [
+  "safar_fajr",
+  "safar_zukhr",
+  "safar_asr",
+  "safar_magrib",
+  "safar_isha",
+  "safar_wajib",
+] as const;
+
+export type SafarPrayerName = (typeof SAFAR_PRAYERS)[number];
+export type TrackableName = PrayerName | FastingName | SafarPrayerName;
+
+export const TRACKABLES: TrackableName[] = [...PRAYERS, FASTING, ...SAFAR_PRAYERS];
+export const MAIN_TRACKABLES: TrackableName[] = [...PRAYERS, FASTING];
+
+const SAFAR_TO_BASE: Record<SafarPrayerName, PrayerName> = {
+  safar_fajr: "fajr",
+  safar_zukhr: "zukhr",
+  safar_asr: "asr",
+  safar_magrib: "magrib",
+  safar_isha: "isha",
+  safar_wajib: "wajib",
+};
+
+export function isSafarName(t: TrackableName): t is SafarPrayerName {
+  return (SAFAR_PRAYERS as readonly string[]).includes(t);
+}
 
 const PRAYER_NAME_KEYS = {
   fajr: "prayer.name.fajr",
@@ -23,5 +48,7 @@ export function prayerName(p: PrayerName): string {
 }
 
 export function trackableName(t: TrackableName): string {
-  return t === FASTING ? m["fasting.name"]() : prayerName(t);
+  if (t === FASTING) return m["fasting.name"]();
+  if (isSafarName(t)) return `${prayerName(SAFAR_TO_BASE[t])} (${m["safar.badge"]()})`;
+  return prayerName(t);
 }

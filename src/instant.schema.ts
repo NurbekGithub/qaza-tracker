@@ -35,6 +35,7 @@ const _schema = i.schema({
       pubertyAuto: i.boolean().optional(),
       prayerStartDate: i.string().optional(),
       menstruationDays: i.number().optional(),
+      safarDays: i.number().optional(),
       fastingStartDate: i.string().optional(),
       updatedAt: i.number(),
     }),

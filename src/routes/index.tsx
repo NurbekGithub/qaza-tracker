@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { db, transact } from "#/lib/db";
 import { formatDate } from "#/lib/date-utils";
 import { deriveCounts, isDoneToday } from "#/lib/prayer-events";
-import { FASTING, PRAYERS, TRACKABLES, type TrackableName } from "#/lib/prayers";
+import { FASTING, PRAYERS, SAFAR_PRAYERS, TRACKABLES, type TrackableName } from "#/lib/prayers";
 import { m } from "#/paraglide/messages";
 import { Layout } from "#/components/layout";
 import { PrayerDialog } from "#/components/prayer-dialog";
@@ -86,6 +86,7 @@ function Home() {
   const hasNoRows = !isLoading && events.length === 0;
   const prayerRows = PRAYERS.map((p) => prayerInfo(p));
   const fastingRow = prayerInfo(FASTING);
+  const safarRows = SAFAR_PRAYERS.map((p) => prayerInfo(p));
 
   return (
     <Tabs value={tab} onValueChange={setTab}>
@@ -101,6 +102,7 @@ function Home() {
         <HomeTabs
           isLoading={isLoading}
           prayers={prayerRows}
+          safar={safarRows}
           fasting={fastingRow}
           events={events}
           onTrackableClick={openDialog}

@@ -125,6 +125,14 @@ export function computePrayerQaza(args: {
   };
 }
 
+export function splitSafarDays(
+  finalDays: number,
+  safarDays: number | null | undefined,
+): { residentDays: number; safarDays: number } {
+  const safar = Math.min(Math.max(0, Math.round(safarDays ?? 0)), finalDays);
+  return { residentDays: finalDays - safar, safarDays: safar };
+}
+
 export function computeFastingQaza(args: {
   pubertyDate: Date;
   fastingStartDate: Date;

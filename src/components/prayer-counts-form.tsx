@@ -8,8 +8,17 @@ import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
 import { QazaCalcDialog } from "#/components/qaza-calc-dialog";
 import { type QazaCalcResult } from "#/components/qaza-result-step";
+import { SafarSection } from "#/components/safar-section";
 import { deriveCounts } from "#/lib/prayer-events";
-import { FASTING, PRAYERS, TRACKABLES, trackableName, type TrackableName } from "#/lib/prayers";
+import {
+  FASTING,
+  MAIN_TRACKABLES,
+  PRAYERS,
+  SAFAR_PRAYERS,
+  TRACKABLES,
+  trackableName,
+  type TrackableName,
+} from "#/lib/prayers";
 import { m } from "#/paraglide/messages";
 
 export function PrayerCountsForm() {
@@ -46,12 +55,17 @@ export function PrayerCountsForm() {
   }
 
   const hasChanges = TRACKABLES.some(hasPrayerCountChanged);
+  // this is so safar collapsable opens after calculation if safar prayers are present
+  const safarTotal = SAFAR_PRAYERS.reduce((sum, p) => sum + values[p], 0);
 
   function handleCalcApply(result: QazaCalcResult) {
     setValues((prev) => {
       const next = { ...prev };
       for (const p of PRAYERS) {
         next[p] = result.prayerCount;
+      }
+      for (const p of SAFAR_PRAYERS) {
+        next[p] = result.safarCount;
       }
       if (result.fastingCount != null) {
         next[FASTING] = result.fastingCount;
@@ -88,7 +102,7 @@ export function PrayerCountsForm() {
         </Button>
       </div>
       <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-        {TRACKABLES.map((p) => (
+        {MAIN_TRACKABLES.map((p) => (
           <div key={p} className="flex items-center justify-between gap-3">
             <label htmlFor={`trackable-${p}`} className="text-base font-medium">
               {trackableName(p)}
@@ -104,6 +118,24 @@ export function PrayerCountsForm() {
             />
           </div>
         ))}
+        <SafarSection total={safarTotal}>
+          {SAFAR_PRAYERS.map((p) => (
+            <div key={p} className="flex items-center justify-between gap-3">
+              <label htmlFor={`trackable-${p}`} className="text-base font-medium">
+                {trackableName(p)}
+              </label>
+              <Input
+                id={`trackable-${p}`}
+                type="number"
+                min={0}
+                inputMode="numeric"
+                className="w-24 text-right tabular-nums"
+                value={values[p]}
+                onChange={(e) => setValues((v) => ({ ...v, [p]: Number(e.target.value) }))}
+              />
+            </div>
+          ))}
+        </SafarSection>
         <Button type="submit" className="mt-2" disabled={!hasChanges}>
           {m["settings.save"]()}
         </Button>

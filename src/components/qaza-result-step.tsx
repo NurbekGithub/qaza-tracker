@@ -2,19 +2,24 @@ import { parseISO } from "date-fns";
 
 import { m } from "#/paraglide/messages";
 import { formatDateLong } from "#/lib/date-utils";
-import { PRAYERS, prayerName } from "#/lib/prayers";
-import { computeFastingQaza, computePrayerQaza } from "#/lib/qaza-calc";
+import { PRAYERS, SAFAR_PRAYERS, prayerName, trackableName } from "#/lib/prayers";
+import { computeFastingQaza, computePrayerQaza, splitSafarDays } from "#/lib/qaza-calc";
 import { Button } from "#/components/ui/button";
 import { DialogTitle } from "#/components/ui/dialog";
 import type { QazaGender } from "#/components/qaza-gender-step";
 
-export type QazaCalcResult = { prayerCount: number; fastingCount: number | null };
+export type QazaCalcResult = {
+  prayerCount: number;
+  safarCount: number;
+  fastingCount: number | null;
+};
 
 type QazaResultStepProps = {
   gender: QazaGender;
   pubertyDate: Date;
   prayerStartDate: Date;
   menstruationDays: number | null;
+  safarDays: number | null;
   fastingStartDate: Date | undefined;
   onApply: (result: QazaCalcResult) => void;
   onBack: () => void;
@@ -25,6 +30,7 @@ export function QazaResultStep({
   pubertyDate,
   prayerStartDate,
   menstruationDays,
+  safarDays,
   fastingStartDate,
   onApply,
   onBack,
@@ -35,6 +41,7 @@ export function QazaResultStep({
     prayerStartDate,
     menstruationDaysPerMonth: menstruationDays,
   });
+  const { residentDays, safarDays: safar } = splitSafarDays(prayer.finalDays, safarDays);
   const fasting = fastingStartDate ? computeFastingQaza({ pubertyDate, fastingStartDate }) : null;
   return (
     <div className="flex flex-col gap-4">
@@ -49,15 +56,36 @@ export function QazaResultStep({
             <span className="tabular-nums">−{prayer.menstruationAdjustment}</span>
           </div>
         ) : null}
+        {safar > 0 ? (
+          <div className="flex justify-between gap-3 text-sm">
+            <span className="text-muted-foreground">{m["qaza.result.safar_minus"]()}</span>
+            <span className="tabular-nums">−{safar}</span>
+          </div>
+        ) : null}
         <div className="mt-1 grid grid-cols-2 gap-x-4 gap-y-1">
           {PRAYERS.map((p) => (
             <div key={p} className="flex justify-between gap-3 text-sm">
               <span className="text-muted-foreground">{prayerName(p)}</span>
-              <span className="tabular-nums">{prayer.finalDays}</span>
+              <span className="tabular-nums">{residentDays}</span>
             </div>
           ))}
         </div>
       </section>
+      {safar > 0 ? (
+        <section className="flex flex-col gap-1.5">
+          <h3 className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+            {m["qaza.result.safar_section"]()}
+          </h3>
+          <div className="mt-1 grid grid-cols-2 gap-x-4 gap-y-1">
+            {SAFAR_PRAYERS.map((p) => (
+              <div key={p} className="flex justify-between gap-3 text-sm">
+                <span className="text-muted-foreground">{trackableName(p)}</span>
+                <span className="tabular-nums">{safar}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
       {fasting ? (
         <section className="flex flex-col gap-1.5">
           <h3 className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
@@ -101,7 +129,11 @@ export function QazaResultStep({
         <Button
           className="flex-1"
           onClick={() =>
-            onApply({ prayerCount: prayer.finalDays, fastingCount: fasting?.totalDays ?? null })
+            onApply({
+              prayerCount: residentDays,
+              safarCount: safar,
+              fastingCount: fasting?.totalDays ?? null,
+            })
           }
         >
           {m["qaza.result.apply"]()}
