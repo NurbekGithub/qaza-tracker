@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 
 import { type TrackableName, trackableName } from "#/lib/prayers";
@@ -6,23 +7,27 @@ import { Button } from "#/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "#/components/ui/dialog";
 import NumberFlow from "@number-flow/react";
 
-type PrayerDialogProps = {
+const STEPS = [1, 3, 5, 10];
+
+type PrayerCounterDialogProps = {
   prayer: TrackableName | null;
   count: number;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onIncrease: (prayer: TrackableName) => void;
-  onDecrease: (prayer: TrackableName) => void;
+  onIncrease: (prayer: TrackableName, delta: number) => void;
+  onDecrease: (prayer: TrackableName, delta: number) => void;
 };
 
-export function PrayerDialog({
+export function PrayerCounterDialog({
   prayer,
   count,
   open,
   onOpenChange,
   onIncrease,
   onDecrease,
-}: PrayerDialogProps) {
+}: PrayerCounterDialogProps) {
+  const [step, setStep] = useState(1);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
@@ -34,12 +39,25 @@ export function PrayerDialog({
           <p className="mt-2 text-5xl font-semibold tabular-nums">
             <NumberFlow value={count} />
           </p>
+          <div className="mt-4 flex gap-2">
+            {STEPS.map((s) => (
+              <Button
+                key={s}
+                size="sm"
+                variant={step === s ? "default" : "outline"}
+                className="flex-1"
+                onClick={() => setStep(s)}
+              >
+                {s}
+              </Button>
+            ))}
+          </div>
         </div>
         <div className="grid grid-cols-2 gap-px overflow-hidden border-t bg-border">
           <Button
             variant="ghost"
             className="h-20 rounded-none bg-red-500 text-xl font-semibold text-white hover:bg-red-600"
-            onClick={() => prayer && onIncrease(prayer)}
+            onClick={() => prayer && onIncrease(prayer, step)}
           >
             <Plus className="size-5" />
             {m["dialog.increase"]()}
@@ -47,7 +65,7 @@ export function PrayerDialog({
           <Button
             variant="ghost"
             className="h-20 rounded-none bg-emerald-500 text-xl font-semibold text-white hover:bg-emerald-600"
-            onClick={() => prayer && onDecrease(prayer)}
+            onClick={() => prayer && onDecrease(prayer, step)}
             disabled={count <= 0}
           >
             <Minus className="size-5" />

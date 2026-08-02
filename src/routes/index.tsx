@@ -9,7 +9,7 @@ import { deriveCounts, isDoneToday } from "#/lib/prayer-events";
 import { FASTING, PRAYERS, SAFAR_PRAYERS, TRACKABLES, type TrackableName } from "#/lib/prayers";
 import { m } from "#/paraglide/messages";
 import { Layout } from "#/components/layout";
-import { PrayerDialog } from "#/components/prayer-dialog";
+import { PrayerCounterDialog } from "#/components/prayer-counter-dialog";
 import { HomeTabs } from "#/components/home-tabs";
 import { HomeTabsNav } from "#/components/home-tabs-nav";
 import { Tabs } from "#/components/ui/tabs";
@@ -45,33 +45,34 @@ function Home() {
     };
   }
 
-  function increase(p: TrackableName) {
+  function increase(p: TrackableName, delta: number) {
     posthog.capture("prayer_count_increased", {
       prayer: p,
-      new_count: counts[p] + 1,
+      new_count: counts[p] + delta,
     });
     transact([
       db.tx.prayerEvents[id()].create({
         prayer: p,
         type: "adjust",
-        delta: 1,
+        delta,
         at: Date.now(),
         ownerId: user.id,
       }),
     ]);
   }
 
-  function decrease(p: TrackableName) {
+  function decrease(p: TrackableName, delta: number) {
     if (counts[p] <= 0) return;
+    const clipped = Math.min(delta, counts[p]);
     posthog.capture("prayer_count_decreased", {
       prayer: p,
-      new_count: counts[p] - 1,
+      new_count: counts[p] - clipped,
     });
     transact([
       db.tx.prayerEvents[id()].create({
         prayer: p,
         type: "adjust",
-        delta: -1,
+        delta: -clipped,
         at: Date.now(),
         ownerId: user.id,
       }),
@@ -108,7 +109,7 @@ function Home() {
           onTrackableClick={openDialog}
         />
 
-        <PrayerDialog
+        <PrayerCounterDialog
           prayer={selected}
           count={selected ? counts[selected] : 0}
           open={selected !== null}

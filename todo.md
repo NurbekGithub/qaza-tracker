@@ -1,4 +1,2 @@
 - make startup faster
 - improve number input ux
-- safar prayer counts
-- ability to inc/decr multiple at once
