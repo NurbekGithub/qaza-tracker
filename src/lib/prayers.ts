@@ -21,7 +21,7 @@ export type TrackableName = PrayerName | FastingName | SafarPrayerName;
 export const TRACKABLES: TrackableName[] = [...PRAYERS, FASTING, ...SAFAR_PRAYERS];
 export const MAIN_TRACKABLES: TrackableName[] = [...PRAYERS, FASTING];
 
-const SAFAR_TO_BASE: Record<SafarPrayerName, PrayerName> = {
+export const SAFAR_TO_BASE: Record<SafarPrayerName, PrayerName> = {
   safar_fajr: "fajr",
   safar_zukhr: "zukhr",
   safar_asr: "asr",

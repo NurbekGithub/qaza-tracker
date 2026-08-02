@@ -5,18 +5,18 @@ import { toast } from "sonner";
 
 import { db, transact } from "#/lib/db";
 import { Button } from "#/components/ui/button";
-import { Input } from "#/components/ui/input";
+import { CountRow } from "#/components/count-row";
 import { QazaCalcDialog } from "#/components/qaza-calc-dialog";
 import { type QazaCalcResult } from "#/components/qaza-result-step";
 import { SafarSection } from "#/components/safar-section";
 import { deriveCounts } from "#/lib/prayer-events";
+import { useCountHints } from "#/lib/count-hints";
 import {
   FASTING,
   MAIN_TRACKABLES,
   PRAYERS,
   SAFAR_PRAYERS,
   TRACKABLES,
-  trackableName,
   type TrackableName,
 } from "#/lib/prayers";
 import { m } from "#/paraglide/messages";
@@ -35,6 +35,12 @@ export function PrayerCountsForm() {
   const [values, setValues] = useState<Record<TrackableName, number>>(() =>
     TRACKABLES.reduce((acc, p) => ({ ...acc, [p]: 0 }), {} as Record<TrackableName, number>),
   );
+  const counts = useMemo(() => deriveCounts(data?.prayerEvents ?? []), [data?.prayerEvents]);
+  const { hints, handleValueChange, applyHint, clearHints } = useCountHints(
+    values,
+    counts,
+    setValues,
+  );
 
   // set default values for form
   // from instantdb server
@@ -42,9 +48,8 @@ export function PrayerCountsForm() {
   useEffect(() => {
     if (!data) return;
     setValues(deriveCounts(data.prayerEvents));
-  }, [data]);
-
-  const counts = useMemo(() => deriveCounts(data?.prayerEvents ?? []), [data?.prayerEvents]);
+    clearHints();
+  }, [data, clearHints]);
 
   if (isLoading) {
     return <p className="text-sm text-muted-foreground">{m["state.loading"]()}</p>;
@@ -58,7 +63,25 @@ export function PrayerCountsForm() {
   // this is so safar collapsable opens after calculation if safar prayers are present
   const safarTotal = SAFAR_PRAYERS.reduce((sum, p) => sum + values[p], 0);
 
+  function renderRow(p: TrackableName) {
+    const entry = hints.find((e) => e.hint.target === p);
+    return (
+      <CountRow
+        key={p}
+        trackable={p}
+        value={values[p]}
+        hint={
+          entry
+            ? { kind: entry.hint.kind, delta: entry.delta, onClick: () => applyHint(entry.hint) }
+            : undefined
+        }
+        onChange={handleValueChange}
+      />
+    );
+  }
+
   function handleCalcApply(result: QazaCalcResult) {
+    clearHints();
     setValues((prev) => {
       const next = { ...prev };
       for (const p of PRAYERS) {
@@ -76,6 +99,7 @@ export function PrayerCountsForm() {
 
   function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
+    clearHints();
     const txs = TRACKABLES.filter(hasPrayerCountChanged).map((p) => {
       const value = values[p];
       posthog.capture("prayer_count_set", { prayer: p, value });
@@ -102,42 +126,8 @@ export function PrayerCountsForm() {
         </Button>
       </div>
       <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-        {MAIN_TRACKABLES.map((p) => (
-          <div key={p} className="flex items-center justify-between gap-3">
-            <label htmlFor={`trackable-${p}`} className="text-base font-medium">
-              {trackableName(p)}
-            </label>
-            <Input
-              id={`trackable-${p}`}
-              type="number"
-              min={0}
-              inputMode="numeric"
-              className="w-24 text-right tabular-nums"
-              placeholder="0"
-              value={values[p] === 0 ? "" : values[p]}
-              onChange={(e) => setValues((v) => ({ ...v, [p]: Number(e.target.value) }))}
-            />
-          </div>
-        ))}
-        <SafarSection total={safarTotal}>
-          {SAFAR_PRAYERS.map((p) => (
-            <div key={p} className="flex items-center justify-between gap-3">
-              <label htmlFor={`trackable-${p}`} className="text-base font-medium">
-                {trackableName(p)}
-              </label>
-              <Input
-                id={`trackable-${p}`}
-                type="number"
-                min={0}
-                inputMode="numeric"
-                className="w-24 text-right tabular-nums"
-                placeholder="0"
-                value={values[p] === 0 ? "" : values[p]}
-                onChange={(e) => setValues((v) => ({ ...v, [p]: Number(e.target.value) }))}
-              />
-            </div>
-          ))}
-        </SafarSection>
+        {MAIN_TRACKABLES.map(renderRow)}
+        <SafarSection total={safarTotal}>{SAFAR_PRAYERS.map(renderRow)}</SafarSection>
         <Button type="submit" className="mt-2" disabled={!hasChanges}>
           {m["settings.save"]()}
         </Button>
