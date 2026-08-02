@@ -22,15 +22,21 @@ declare module "@tanstack/react-router" {
 }
 
 const rootElement = document.getElementById("app")!;
+rootElement.replaceChildren();
 
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
-    <>
-      <RouterProvider router={router} />
-      <ReloadPrompt />
-      <IosInstallBanner />
-      <AndroidInstallBanner />
-    </>,
-  );
+const root = ReactDOM.createRoot(rootElement);
+root.render(
+  <>
+    <RouterProvider router={router} />
+    <ReloadPrompt />
+    <IosInstallBanner />
+    <AndroidInstallBanner />
+  </>,
+);
+
+const bootAnalytics = () => void import("#/lib/analytics").then((m) => m.loadAnalytics());
+if ("requestIdleCallback" in window) {
+  requestIdleCallback(bootAnalytics, { timeout: 3000 });
+} else {
+  setTimeout(bootAnalytics, 0);
 }

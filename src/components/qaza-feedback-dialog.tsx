@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { usePostHog } from "@posthog/react";
+import { usePostHog } from "#/lib/analytics";
 import { toast } from "sonner";
 
 import { m } from "#/paraglide/messages";

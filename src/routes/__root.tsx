@@ -1,29 +1,20 @@
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
-import { PostHogProvider } from "@posthog/react";
 
 import { db } from "#/lib/db";
-import { Toaster } from "#/components/ui/sonner";
 import { ThemeProvider } from "#/components/theme-provider";
 import { m } from "#/paraglide/messages";
 import "../styles.css";
 
+const Toaster = lazy(() =>
+  import("#/components/ui/sonner").then((mod) => ({ default: mod.Toaster })),
+);
+
 export const Route = createRootRoute({
   component: () => (
-    <PostHogProvider
-      apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_PROJECT_TOKEN!}
-      options={{
-        api_host: "/ingest",
-        ui_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST || "https://eu.posthog.com",
-        defaults: "2026-01-30",
-        capture_exceptions: true,
-        debug: false,
-      }}
-    >
-      <ThemeProvider>
-        <RootComponent />
-      </ThemeProvider>
-    </PostHogProvider>
+    <ThemeProvider>
+      <RootComponent />
+    </ThemeProvider>
   ),
 });
 
@@ -53,7 +44,9 @@ function RootComponent() {
   return (
     <>
       <Outlet />
-      <Toaster position="top-center" />
+      <Suspense fallback={null}>
+        <Toaster position="top-center" />
+      </Suspense>
     </>
   );
 }

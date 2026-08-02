@@ -6,7 +6,7 @@ import { extractError } from "#/lib/error-utils";
 import { m } from "#/paraglide/messages";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
-import { usePostHog } from "@posthog/react";
+import { usePostHog } from "#/lib/analytics";
 
 type EmailSignInFormProps = {
   onSuccess: () => void;
