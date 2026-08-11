@@ -17,14 +17,14 @@ type QazaFeedbackDialogProps = {
 
 export function QazaFeedbackDialog({ step }: QazaFeedbackDialogProps) {
   const posthog = usePostHog();
-  const user = db.useUser();
+  const { user } = db.useAuth();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
 
   function handleSubmit() {
     const message = text.trim();
     if (!message) return;
-    if (SURVEY_ID) {
+    if (SURVEY_ID && user) {
       posthog.capture("survey sent", {
         $survey_id: SURVEY_ID,
         $survey_response: message,
@@ -57,7 +57,7 @@ export function QazaFeedbackDialog({ step }: QazaFeedbackDialogProps) {
             placeholder={m["qaza.feedback.placeholder"]()}
             onChange={(event) => setText(event.target.value)}
           />
-          <Button onClick={handleSubmit} disabled={!text.trim()}>
+          <Button onClick={handleSubmit} disabled={!text.trim() || !user}>
             {m["qaza.feedback.submit"]()}
           </Button>
         </DialogContent>

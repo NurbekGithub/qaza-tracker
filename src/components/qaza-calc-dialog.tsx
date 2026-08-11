@@ -34,10 +34,10 @@ type QazaCalcDialogProps = {
 const EARLIEST_BIRTH_MONTH = new Date(1920, 0, 1);
 
 export function QazaCalcDialog({ open, onOpenChange, onApply }: QazaCalcDialogProps) {
-  const user = db.useUser();
-  const { isLoading, data } = db.useQuery({
-    qazaProfiles: { $: { where: { ownerId: user.id } } },
-  });
+  const { user } = db.useAuth();
+  const { isLoading, data } = db.useQuery(
+    user ? { qazaProfiles: { $: { where: { ownerId: user.id } } } } : null,
+  );
   const profile = data?.qazaProfiles[0];
 
   const [step, setStep] = useState<WizardStep>("birth");
@@ -65,7 +65,7 @@ export function QazaCalcDialog({ open, onOpenChange, onApply }: QazaCalcDialogPr
   }, [open, data]);
 
   function handleApply(result: QazaCalcResult) {
-    if (!birthDate || !gender || !puberty || !prayerStart) return;
+    if (!user || !birthDate || !gender || !puberty || !prayerStart) return;
     transact(
       db.tx.qazaProfiles[profile?.id ?? id()].update({
         ownerId: user.id,

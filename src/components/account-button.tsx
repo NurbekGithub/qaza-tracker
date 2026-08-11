@@ -8,8 +8,10 @@ import { usePostHog } from "#/lib/analytics";
 
 export function AccountButton() {
   const [open, setOpen] = useState(false);
-  const user = db.useUser();
+  const { user } = db.useAuth();
   const posthog = usePostHog();
+
+  if (!user) return null;
 
   function handleLinkAccount() {
     posthog.capture("account_link_started");

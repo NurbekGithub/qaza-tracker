@@ -17,11 +17,11 @@ import { Tabs } from "#/components/ui/tabs";
 export const Route = createFileRoute("/")({ component: Home });
 
 function Home() {
-  const user = db.useUser();
+  const { user } = db.useAuth();
   const posthog = usePostHog();
-  const { isLoading, data } = db.useQuery({
-    prayerEvents: { $: { where: { ownerId: user.id } } },
-  });
+  const { isLoading, data } = db.useQuery(
+    user ? { prayerEvents: { $: { where: { ownerId: user.id } } } } : null,
+  );
   const [selected, setSelected] = useState<TrackableName | null>(null);
   const [tab, setTab] = useState("counts");
 
@@ -46,6 +46,7 @@ function Home() {
   }
 
   function increase(p: TrackableName, delta: number) {
+    if (!user) return;
     posthog.capture("prayer_count_increased", {
       prayer: p,
       new_count: counts[p] + delta,
@@ -62,6 +63,7 @@ function Home() {
   }
 
   function decrease(p: TrackableName, delta: number) {
+    if (!user) return;
     if (counts[p] <= 0) return;
     const clipped = Math.min(delta, counts[p]);
     posthog.capture("prayer_count_decreased", {

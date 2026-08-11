@@ -16,7 +16,7 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("#/lib/db", () => ({
   db: {
-    useUser: () => ({ id: "user-1" }),
+    useAuth: () => ({ isLoading: false, user: { id: "user-1" }, error: undefined }),
     useQuery: () => ({ isLoading: false, data: mocks.state.data }),
     tx: { prayerEvents: new Proxy({}, { get: () => ({ create: (v: unknown) => v }) }) },
   },

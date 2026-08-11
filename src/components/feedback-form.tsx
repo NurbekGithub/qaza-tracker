@@ -13,14 +13,14 @@ const SURVEY_ID = import.meta.env.VITE_PUBLIC_POSTHOG_FEEDBACK_SURVEY_ID as stri
 
 export function FeedbackForm() {
   const posthog = usePostHog();
-  const user = db.useUser();
+  const { user } = db.useAuth();
   const [rating, setRating] = useState(0);
   const [text, setText] = useState("");
 
   function handleSubmit() {
     if (rating === 0) return;
     const message = text.trim();
-    if (SURVEY_ID) {
+    if (SURVEY_ID && user) {
       posthog.capture("survey sent", {
         $survey_id: SURVEY_ID,
         $survey_response: `${rating}/5${message ? ` — ${message}` : ""}`,
@@ -57,7 +57,7 @@ export function FeedbackForm() {
         placeholder={m["feedback.placeholder"]()}
         onChange={(event) => setText(event.target.value)}
       />
-      <Button onClick={handleSubmit} disabled={rating === 0}>
+      <Button onClick={handleSubmit} disabled={rating === 0 || !user}>
         {m["feedback.submit"]()}
       </Button>
     </div>

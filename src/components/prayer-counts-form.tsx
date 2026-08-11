@@ -22,11 +22,11 @@ import {
 import { m } from "#/paraglide/messages";
 
 export function PrayerCountsForm() {
-  const user = db.useUser();
+  const { user } = db.useAuth();
   const posthog = usePostHog();
-  const { isLoading, data } = db.useQuery({
-    prayerEvents: { $: { where: { ownerId: user.id } } },
-  });
+  const { isLoading, data } = db.useQuery(
+    user ? { prayerEvents: { $: { where: { ownerId: user.id } } } } : null,
+  );
 
   const [calcOpen, setCalcOpen] = useState(false);
 
@@ -99,6 +99,7 @@ export function PrayerCountsForm() {
 
   function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!user) return;
     clearHints();
     const txs = TRACKABLES.filter(hasPrayerCountChanged).map((p) => {
       const value = values[p];

@@ -3,7 +3,6 @@ import { Outlet, createRootRoute } from "@tanstack/react-router";
 
 import { db } from "#/lib/db";
 import { ThemeProvider } from "#/components/theme-provider";
-import { m } from "#/paraglide/messages";
 import "../styles.css";
 
 const Toaster = lazy(() =>
@@ -21,13 +20,12 @@ export const Route = createRootRoute({
 function RootComponent() {
   const { isLoading, user, error } = db.useAuth();
 
-  if (isLoading) {
-    return (
-      <div className="flex min-h-svh items-center justify-center">
-        <p className="text-sm text-muted-foreground">{m["state.loading"]()}</p>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (isLoading || user || error) return;
+    db.auth.signInAsGuest().catch((err) => {
+      console.error("Failed to sign in as guest:", err);
+    });
+  }, [isLoading, user, error]);
 
   if (error) {
     return (
@@ -37,10 +35,6 @@ function RootComponent() {
     );
   }
 
-  if (!user) {
-    return <GuestSignIn />;
-  }
-
   return (
     <>
       <Outlet />
@@ -48,19 +42,5 @@ function RootComponent() {
         <Toaster position="top-center" />
       </Suspense>
     </>
-  );
-}
-
-function GuestSignIn() {
-  useEffect(() => {
-    db.auth.signInAsGuest().catch((err) => {
-      console.error("Failed to sign in as guest:", err);
-    });
-  }, []);
-
-  return (
-    <div className="flex min-h-svh items-center justify-center">
-      <p className="text-sm text-muted-foreground">{m["state.starting"]()}</p>
-    </div>
   );
 }
