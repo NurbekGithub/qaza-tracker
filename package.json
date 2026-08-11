@@ -7,6 +7,8 @@
   },
   "scripts": {
     "dev": "vite dev --port 3000 --host 0.0.0.0",
+    "db:push": "npx instant-cli push --env .env.local",
+    "db:push-prod": "npx instant-cli push --env .env.prod",
     "generate-routes": "tsr generate",
     "build": "vite build",
     "preview": "vite preview",
