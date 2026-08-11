@@ -111,11 +111,15 @@ function Home() {
 
         <PrayerCounterDialog
           prayer={selected}
-          count={selected ? counts[selected] : 0}
+          counts={counts}
           open={selected !== null}
           onOpenChange={(open) => !open && setSelected(null)}
           onIncrease={increase}
           onDecrease={decrease}
+          onNavigate={(p) => {
+            setSelected(p);
+            posthog.capture("prayer_dialog_navigated", { prayer: p });
+          }}
         />
       </Layout>
     </Tabs>

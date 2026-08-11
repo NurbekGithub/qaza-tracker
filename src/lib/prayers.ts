@@ -34,6 +34,12 @@ export function isSafarName(t: TrackableName): t is SafarPrayerName {
   return (SAFAR_PRAYERS as readonly string[]).includes(t);
 }
 
+export function swipeGroup(t: TrackableName): TrackableName[] {
+  if (t === FASTING) return [FASTING];
+  if (isSafarName(t)) return [...SAFAR_PRAYERS];
+  return [...PRAYERS];
+}
+
 const PRAYER_NAME_KEYS = {
   fajr: "prayer.name.fajr",
   zukhr: "prayer.name.zukhr",
