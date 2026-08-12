@@ -22,7 +22,6 @@ export async function loadAnalytics() {
   posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
     api_host: "/ingest",
     ui_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST || "https://eu.posthog.com",
-    defaults: "2026-01-30",
     capture_exceptions: true,
     debug: false,
   });

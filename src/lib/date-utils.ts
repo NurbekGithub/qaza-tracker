@@ -2,6 +2,7 @@ import { enUS, kk } from "date-fns/locale";
 import { format, parseISO, subDays, type Locale } from "date-fns";
 
 import { getLocale } from "#/paraglide/runtime";
+import { m } from "#/paraglide/messages";
 
 const DATE_FNS_LOCALES: Record<string, Locale> = {
   en: enUS,
@@ -28,7 +29,7 @@ export function formatDateLabel(ms: number): string {
   const iso = format(ms, "yyyy-MM-dd");
   const today = format(new Date(), "yyyy-MM-dd");
   const yesterday = format(subDays(new Date(), 1), "yyyy-MM-dd");
-  if (iso === today) return `Today (${iso})`;
-  if (iso === yesterday) return `Yesterday (${iso})`;
+  if (iso === today) return m["date.today"]({ date: iso });
+  if (iso === yesterday) return m["date.yesterday"]({ date: iso });
   return iso;
 }

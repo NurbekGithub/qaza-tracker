@@ -12,6 +12,11 @@
   "tab.log": "Журнал",
   "tab.feedback": "Пікір",
 
+  "date.today": "Бүгін ({date})",
+  "date.yesterday": "Кеше ({date})",
+
+  "dialog.close": "Жабу",
+
   "feedback.title": "Қолданбаға баға беріңіз",
   "feedback.placeholder": "Толығырақ жазыңыз (міндетті емес)…",
   "feedback.submit": "Жіберу",

@@ -29,7 +29,10 @@ export function GoogleSignInButton({ onSuccess }: GoogleSignInButtonProps) {
           nonce,
         });
         posthog.capture("account_linked");
-        posthog.identify(nonce);
+        const email = (await db.getAuth())?.email;
+        if (email) {
+          posthog.identify(email);
+        }
         onSuccess();
       } catch (err) {
         posthog.captureException(err);

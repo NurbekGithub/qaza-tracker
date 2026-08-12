@@ -12,6 +12,11 @@
   "tab.log": "Log",
   "tab.feedback": "Feedback",
 
+  "date.today": "Today ({date})",
+  "date.yesterday": "Yesterday ({date})",
+
+  "dialog.close": "Close",
+
   "feedback.title": "Rate the app",
   "feedback.placeholder": "Tell us more (optional)…",
   "feedback.submit": "Send",
