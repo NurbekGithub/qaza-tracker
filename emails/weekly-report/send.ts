@@ -1,3 +1,5 @@
+import nodemailer from "nodemailer";
+
 export type EmailPayload = {
   subject: string;
   html: string;
@@ -5,29 +7,27 @@ export type EmailPayload = {
 };
 
 export function getEmailFrom(): string {
-  return process.env.EMAIL_FROM ?? "Qaza Tracker <onboarding@resend.dev>";
+  return process.env.EMAIL_FROM ?? "Qaza Tracker";
 }
 
 export async function sendEmail(to: string, payload: EmailPayload): Promise<{ id: string }> {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) throw new Error("RESEND_API_KEY is not set");
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: getEmailFrom(),
-      to: [to],
-      subject: payload.subject,
-      html: payload.html,
-      text: payload.text,
-    }),
-  });
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`Resend error ${res.status}: ${body}`);
+  const user = process.env.GMAIL_USER;
+  const appPassword = process.env.GMAIL_APP_PASSWORD;
+  if (!user || !appPassword) {
+    throw new Error("GMAIL_USER and GMAIL_APP_PASSWORD must be set");
   }
-  return (await res.json()) as { id: string };
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: { user, pass: appPassword },
+  });
+  const info = await transporter.sendMail({
+    from: `${getEmailFrom()} <${user}>`,
+    to,
+    subject: payload.subject,
+    html: payload.html,
+    text: payload.text,
+  });
+  return { id: info.messageId };
 }

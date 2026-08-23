@@ -42,7 +42,7 @@ const USAGE = `Usage:
                                             Write ${PREVIEW_PATH}, no send
 
 Env required: INSTANT_APP_ADMIN_TOKEN (+ VITE_INSTANT_APP_ID or INSTANT_APP_ID),
-RESEND_API_KEY. Optional: EMAIL_FROM, APP_URL (default ${DEFAULT_APP_URL}).`;
+GMAIL_USER, GMAIL_APP_PASSWORD. Optional: EMAIL_FROM, APP_URL (default ${DEFAULT_APP_URL}).`;
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));

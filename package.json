@@ -20,8 +20,8 @@
     "typecheck": "tsc --noEmit",
     "i18n": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide --emit-ts-declarations",
     "email:preview": "bun run scripts/send-weekly-email.ts --preview",
-    "email:test": "bun run scripts/send-weekly-email.ts",
-    "email:send-all": "bun run scripts/send-weekly-email.ts --all"
+    "email:test": "bun --env-file=.env.local run scripts/send-weekly-email.ts",
+    "email:send-all": "bun --env-file=.env.local run scripts/send-weekly-email.ts --all"
   },
   "dependencies": {
     "@base-ui/react": "1.6.0",
@@ -36,6 +36,7 @@
     "clsx": "2.1.1",
     "date-fns": "4.4.0",
     "lucide-react": "1.23.0",
+    "nodemailer": "9.0.5",
     "posthog-js": "1.396.9",
     "react": "19.2.7",
     "react-day-picker": "10.0.1",
@@ -57,6 +58,7 @@
     "@testing-library/dom": "10.4.1",
     "@testing-library/react": "16.3.2",
     "@types/node": "26.1.0",
+    "@types/nodemailer": "8.0.1",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.3",
