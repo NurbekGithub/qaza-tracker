@@ -1,6 +1,6 @@
 import { init } from "@instantdb/admin";
 
-import { intlLocale, normalizeLocale, type Locale } from "./messages";
+import { intlLocale, normalizeLocale, type Locale } from "./messages.js";
 
 export type ReportEvent = {
   id: string;

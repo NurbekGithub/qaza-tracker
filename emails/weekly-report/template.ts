@@ -1,5 +1,5 @@
-import { intlLocale, t, type Locale } from "./messages";
-import type { CountRow, WeeklyReport } from "./report";
+import { intlLocale, t, type Locale } from "./messages.js";
+import type { CountRow, WeeklyReport } from "./report.js";
 
 const COLORS = {
   page: "#F7F3EA",

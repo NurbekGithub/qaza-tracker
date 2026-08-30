@@ -1,9 +1,9 @@
 import { writeFile } from "node:fs/promises";
 
-import { demoReport } from "../emails/weekly-report/report";
-import { reportForEmail, runWeeklyReports, DEFAULT_APP_URL } from "../emails/weekly-report/run";
-import { getEmailFrom, sendEmail } from "../emails/weekly-report/send";
-import { renderWeeklyReportEmail } from "../emails/weekly-report/template";
+import { demoReport } from "../emails/weekly-report/report.js";
+import { reportForEmail, runWeeklyReports, DEFAULT_APP_URL } from "../emails/weekly-report/run.js";
+import { getEmailFrom, sendEmail } from "../emails/weekly-report/send.js";
+import { renderWeeklyReportEmail } from "../emails/weekly-report/template.js";
 
 const PREVIEW_PATH = "emails/preview.html";
 

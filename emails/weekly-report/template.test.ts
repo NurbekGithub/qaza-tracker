@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { demoReport } from "./report";
-import { renderWeeklyReportEmail } from "./template";
+import { demoReport } from "./report.js";
+import { renderWeeklyReportEmail } from "./template.js";
 
 const APP_URL = "https://example.com";
 

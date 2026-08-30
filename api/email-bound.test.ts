@@ -79,7 +79,7 @@ vi.mock("@instantdb/admin", () => ({
   }),
 }));
 
-const { POST } = await import("./email-bound");
+const { POST } = await import("./email-bound.js");
 
 describe("POST /email-bound", () => {
   beforeEach(() => {

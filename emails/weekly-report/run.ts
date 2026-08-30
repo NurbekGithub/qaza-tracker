@@ -10,9 +10,9 @@ import {
   listUserPrefs,
   type EmailUser,
   type WeeklyReport,
-} from "./report";
-import { sendEmail } from "./send";
-import { renderWeeklyReportEmail } from "./template";
+} from "./report.js";
+import { sendEmail } from "./send.js";
+import { renderWeeklyReportEmail } from "./template.js";
 
 export const DEFAULT_APP_URL = "https://simple-qaza-tracker.vercel.app";
 

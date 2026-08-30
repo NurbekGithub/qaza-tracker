@@ -1,4 +1,4 @@
-import { runWeeklyReports } from "../emails/weekly-report/run";
+import { runWeeklyReports } from "../emails/weekly-report/run.js";
 
 export async function GET(request: Request): Promise<Response> {
   const cronSecret = process.env.CRON_SECRET;
