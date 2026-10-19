@@ -16,3 +16,5 @@ todos.json
 opencode.json
 
 emails/preview.html
+.vercel
+.env*
